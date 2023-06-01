@@ -2,13 +2,13 @@
     <div class="flex flex-col">
         <!-- serach bar -->
         <div
-            class="flex flex-row gap-2 items-center py-1 pl-2.5 pr-2 rounded-3xl overflow-hidden bg-dim-400 dark:bg-dim-800"
+            class="flex flex-row gap-2 items-center py-1 pl-2.5 pr-2 border-none rounded-3xl overflow-hidden bg-dim-400 dark:bg-dim-800"
             :class="{ 'outline-dim-600 outline-1 outline-double': outline }"
         >
-            <MagnifyingGlassIcon class="w-6 text-gray-500" />
+            <MagnifyingGlassIcon class="w-6 h-6 text-gray-500" />
             <input
                 type="search"
-                class="w-full p-2.5 bg-inherit focus-within:outline-none rounded-3xl dark:bg-dim-800 dark:text-white"
+                class="w-full py-2 text-sm bg-inherit focus-within:outline-none border-0 focus:ring-0 focus:outline-none rounded-3xl dark:bg-dim-800 dark:text-white"
                 placeholder="search for Banana"
                 v-model="search"
             />

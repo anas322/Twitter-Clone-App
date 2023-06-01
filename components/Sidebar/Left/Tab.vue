@@ -8,7 +8,7 @@
             <div class="w-6 h-6">
                 <slot name="icon"></slot>
             </div>
-            <div class="hidden large:block ml-4 text-xl" :class="[textClasses]">
+            <div class="hidden large:block ml-4 text-lg" :class="[textClasses]">
                 <slot name="name"></slot>
             </div>
         </NuxtLink>
