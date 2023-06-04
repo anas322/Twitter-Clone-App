@@ -1,9 +1,9 @@
 <template>
     <div class="relative">
         <!-- fixed header -->
-        <div class="sticky top-0 border-b border-gray-200">
-            <div class="backdrop-blur-md bg-[#ffffff78] dark:bg-[#ffffff20]">
-                <div><span class="dark:text-white text-xl font-bold pl-2 pt-2">Home</span></div>
+        <div class="z-40 sticky top-0 border-b border-gray-200 dark:border-white/20">
+            <div class="pt-2 backdrop-blur-md bg-[#ffffff78] dark:bg-[#ffffff05]">
+                <div><span class="dark:text-white text-lg font-semibold pl-4">Home</span></div>
 
                 <div class="flex flex-row pt-5">
                     <div class="w-1/2 py-3 px-28 hover:bg-gray-100 cursor-pointer dark:hover:bg-white/10">

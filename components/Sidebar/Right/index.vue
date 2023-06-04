@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <button
-                        class="px-3.5 py-1 h-min text-sm rounded-2xl text-white font-semibold bg-dim-900 dark:bg-white"
+                        class="px-3.5 py-1 h-min text-sm rounded-2xl text-white font-semibold bg-dim-900 dark:bg-white dark:text-black"
                     >
                         <span> Follow </span>
                     </button>

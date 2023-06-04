@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-const darkMode = ref(false);
+const darkMode = ref(true);
 const { useAuthLoading } = useAuth();
 const isLoading = computed(() => useAuthLoading().value);
 </script>

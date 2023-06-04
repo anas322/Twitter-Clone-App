@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col h-screen">
+    <div class="flex flex-col h-screen space-y-3">
         <div
             class="p-2 my-2 mx-auto large:mx-0 w-min hover:bg-blue-50 rounded-full dark:hover:bg-white/20"
             :class="defaultTransition"
@@ -30,7 +30,7 @@
                 <template #icon>
                     <BellIcon class="w-7" />
                 </template>
-                <template #name> Notification </template>
+                <template #name> Notifications </template>
             </SidebarLeftTab>
 
             <SidebarLeftTab>
@@ -68,6 +68,12 @@
                 <template #name> More </template>
             </SidebarLeftTab>
         </div>
+
+        <button
+            class="px-16 py-3 text-center font-medium text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-0 transition duration-300"
+        >
+            Tweet
+        </button>
     </div>
 </template>
 

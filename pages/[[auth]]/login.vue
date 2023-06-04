@@ -1,4 +1,5 @@
 <script setup lang="ts">
+definePageMeta({ middleware: ["guest"] });
 const route = useRoute();
 const { login } = useAuth();
 
