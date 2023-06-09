@@ -15,14 +15,16 @@
             <main
                 class="border-x border-gray-200 col-span-12 small:col-span-10 meduim:col-span-7 large:col-span-6 dark:border-white/20"
             >
-                <MainSection>
-                    <TweetForm />
-
+                <MainSection withoutHeader>
                     <div v-if="tweetsLoading" class="flex justify-center items-center h-24">
                         <UISpinner />
                     </div>
 
-                    <TweetListFeed v-else :tweets="tweets" />
+                    <TweetListFeed v-else :tweets="tweet" parent />
+
+                    <TweetForm :reply_to="tweet[0].id" @on-success="handleFormSuccess" />
+
+                    <TweetListFeed v-if="replies.length" :tweets="replies" />
                 </MainSection>
             </main>
             <!-- end main content -->
@@ -41,20 +43,29 @@
 </template>
 
 <script setup>
-definePageMeta({ middleware: ["auth"] });
+const { getSingleTweet } = useTweets();
 
-const { user } = useAuth();
-const { getTweets, fetchTweet } = useTweets();
-
-const tweets = ref([]);
-const tweetsLoading = ref(true);
+const tweetsLoading = ref(false);
+const tweet = ref([]);
+const replies = ref([]);
+const id = computed(() => {
+    return useRoute().params.id;
+});
 
 try {
-    const { data } = await getTweets();
-    tweets.value = data.value.tweets;
+    tweetsLoading.value = true;
+
+    const { data } = await getSingleTweet(id.value);
+
+    tweet.value = [data.value.tweet];
+    replies.value = data.value.tweet.replies;
 } catch (error) {
     console.log(error);
 } finally {
     tweetsLoading.value = false;
 }
+
+const handleFormSuccess = (tweet) => {
+    replies.value.push(tweet);
+};
 </script>

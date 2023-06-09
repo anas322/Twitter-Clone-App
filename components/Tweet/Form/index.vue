@@ -4,7 +4,7 @@
             <div class="flex-shrink-0">
                 <img
                     class="w-10 h-10 rounded-full"
-                    src="	https://pbs.twimg.com/profile_images/1624685067577573378/ryXZhuCt_normal.jpg"
+                    src="https://pbs.twimg.com/profile_images/1624685067577573378/ryXZhuCt_normal.jpg"
                     alt=""
                 />
             </div>
@@ -150,6 +150,14 @@
 <script setup>
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 
+const emits = defineEmits(["onSuccess"]);
+
+const props = defineProps({
+    reply_to: {
+        type: Number,
+        default: null,
+    },
+});
 const inputImage = ref();
 const selectedImage = ref([]);
 const mediaPreview = ref("");
@@ -179,7 +187,7 @@ const handleImageChange = (event) => {
 const handleRemoveMedia = () => {
     selectedImage.value = [];
     mediaPreview.value = "";
-    inputImage.value.value = "";
+    inputImage.value ? (inputImage.value.value = "") : null;
 };
 
 const handleImageClick = () => {
@@ -191,6 +199,9 @@ const handleSubmit = async () => {
 
     const formData = new FormData();
     formData.append("content", tweetContent.value);
+    if (props.reply_to) {
+        formData.append("reply_to", props.reply_to);
+    }
 
     if (selectedImage.value?.length > 0) {
         for (let i = 0; i < selectedImage.value.length; i++) {
@@ -203,8 +214,9 @@ const handleSubmit = async () => {
             method: "POST",
             body: formData,
         });
-
+        emits("onSuccess", data.value.tweet);
         loading.value = false;
+
         if (data.value) {
             console.log("Success:", data.value.message);
             tweetContent.value = "";
