@@ -1,5 +1,5 @@
 <template>
-    <div class="border-b border-gray-200 dark:border-white/20">
+    <div :class="[props.modal === false ? 'border-b' : '', themeMode === true ? 'border-white/20' : 'border-gray-200']">
         <div class="flex items-start space-x-3 pt-2 px-3">
             <div class="flex-shrink-0">
                 <img
@@ -13,7 +13,7 @@
                     <div v-if="loading" class="flex justify-center items-center h-24">
                         <UISpinner />
                     </div>
-                    <div v-else class="border-b border-gray-200 dark:border-white/20">
+                    <div v-else class="border-b" :class="themeMode === true ? 'border-white/20' : 'border-gray-200'">
                         <input
                             @change="handleImageChange"
                             type="file"
@@ -25,7 +25,8 @@
 
                         <textarea
                             v-model="tweetContent"
-                            class="w-full px-4 py-2 text-gray-600 rounded-lg focus:ring-0 border-0 bg-transparent focus:border-transparent resize-none"
+                            class="w-full px-4 py-2 text-lg rounded-lg focus:ring-0 border-0 bg-transparent focus:border-transparent resize-none"
+                            :class="themeMode === true ? 'text-white' : 'text-black'"
                             rows="3"
                             placeholder="What's happening?"
                         ></textarea>
@@ -157,7 +158,15 @@ const props = defineProps({
         type: Number,
         default: null,
     },
+    modal: {
+        type: Boolean,
+        default: false,
+    },
 });
+
+const { useThemeMode } = useTheme();
+const themeMode = useThemeMode().value;
+
 const inputImage = ref();
 const selectedImage = ref([]);
 const mediaPreview = ref("");

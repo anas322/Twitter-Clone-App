@@ -2,7 +2,7 @@
     <div class="relative">
         <!-- fixed header -->
         <div
-            class="z-40 sticky top-0 dark:border-white/20"
+            class="z-10 sticky top-0 dark:border-white/20"
             :class="{ 'border-b border-gray-200': !withoutHeader, 'pb-4 px-3': withoutHeader }"
         >
             <div class="pt-2 backdrop-blur-md bg-[#ffffff78] dark:bg-[#ffffff05]">

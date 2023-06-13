@@ -1,4 +1,16 @@
 export default () => {
+    const usePostTweetModal = () => useState("post_tweet_modal", () => false);
+
+    const closePostTweetModal = () => {
+        const postTweetModal = usePostTweetModal();
+        postTweetModal.value = false;
+    };
+
+    const openPostTweetModal = () => {
+        const postTweetModal = usePostTweetModal();
+        postTweetModal.value = true;
+    };
+
     const getTweets = async () => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -24,5 +36,8 @@ export default () => {
     return {
         getTweets,
         getSingleTweet,
+        closePostTweetModal,
+        usePostTweetModal,
+        openPostTweetModal,
     };
 };

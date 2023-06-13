@@ -6,7 +6,7 @@
             <!-- start left sidebar -->
             <div class="hidden small:block col-span-2 meduim:col-span-1 large:col-span-2">
                 <div class="sticky top-0">
-                    <SidebarLeft />
+                    <SidebarLeft @on-tweet="handleModalOpen" />
                 </div>
             </div>
             <!-- end left sidebar -->
@@ -37,6 +37,10 @@
             </div>
             <!-- end right sidebar -->
         </div>
+
+        <UIDialog :isOpen="postTweetModal" @on-close="handleModalClose">
+            <TweetForm @on-success="handleFormSucess" :modal="true" />
+        </UIDialog>
     </div>
 </template>
 
@@ -44,10 +48,11 @@
 definePageMeta({ middleware: ["auth"] });
 
 const { user } = useAuth();
-const { getTweets, fetchTweet } = useTweets();
+const { getTweets, fetchTweet, closePostTweetModal, openPostTweetModal, usePostTweetModal } = useTweets();
 
 const tweets = ref([]);
 const tweetsLoading = ref(true);
+const postTweetModal = usePostTweetModal();
 
 try {
     const { data } = await getTweets();
@@ -57,4 +62,16 @@ try {
 } finally {
     tweetsLoading.value = false;
 }
+
+const handleFormSucess = (tweet) => {
+    tweets.value.unshift(tweet);
+    closePostTweetModal();
+};
+
+const handleModalClose = () => {
+    closePostTweetModal();
+};
+const handleModalOpen = () => {
+    openPostTweetModal();
+};
 </script>

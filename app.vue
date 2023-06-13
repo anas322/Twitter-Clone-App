@@ -27,7 +27,8 @@ useHead({
     ],
 });
 
-const darkMode = ref(true);
+const { useThemeMode } = useTheme();
+const darkMode = useThemeMode().value;
 const { useAuthLoading } = useAuth();
 const isLoading = computed(() => useAuthLoading().value);
 </script>

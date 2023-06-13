@@ -70,7 +70,7 @@
         </div>
 
         <!-- Tweet Button  -->
-        <div>
+        <div @click="emits('onTweet')">
             <button
                 class="hidden large:block px-16 py-3 text-center font-medium text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-0 transition duration-300"
             >
@@ -105,5 +105,8 @@ import {
     EllipsisHorizontalCircleIcon,
     EnvelopeIcon,
 } from "@heroicons/vue/24/outline";
+
+const emits = defineEmits(["onTweet"]);
+
 const { defaultTransition } = useTailWindConfig();
 </script>
