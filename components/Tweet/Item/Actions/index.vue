@@ -2,7 +2,7 @@
     <div class="mt-2">
         <div class="flex justify-between flex-row max-w-[425px]">
             <!-- comments -->
-            <TweetItemActionsIcon color="dim">
+            <TweetItemActionsIcon color="dim" @on-click="emits('onCommitClick')">
                 <template #icon="{ classes }">
                     <ChatBubbleOvalLeftIcon :class="classes" />
                 </template>
@@ -50,6 +50,7 @@
 import { ChatBubbleOvalLeftIcon, ArrowUpTrayIcon } from "@heroicons/vue/24/outline";
 import { ArrowPathRoundedSquareIcon } from "@heroicons/vue/20/solid";
 
+const emits = defineEmits(["onCommitClick"]);
 const props = defineProps({
     tweet: {
         type: Object,

@@ -1,5 +1,5 @@
 <template>
-    <div class="group flex items-center space-x-1">
+    <div @click.stop.prevent="emits('onClick')" class="group flex items-center space-x-1">
         <div>
             <slot
                 name="icon"
@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+const emits = defineEmits(["onClick"]);
 const props = defineProps({
     color: {
         type: String,

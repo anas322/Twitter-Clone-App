@@ -1,10 +1,14 @@
 <template>
-    <div class="border-b border-gray-200 dark:border-white/20">
+    <div :class="[props.modal === false ? 'border-b' : '', themeMode === true ? 'border-white/20' : 'border-gray-200']">
         <div
-            class="flex items-start space-x-3 pt-2 px-3"
-            :class="{ 'cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5': !isSamePath() }"
+            class="relative flex items-start space-x-3 pt-2"
+            :class="[themeClass(), props.modal ? '' : 'px-3']"
             @click="navigateToTweet"
         >
+            <span
+                v-if="props.modal"
+                class="absolute left-8 top-12 bottom-0 block mt-1 mx-auto w-[2px] bg-white/20"
+            ></span>
             <div class="flex-shrink-0">
                 <img
                     class="w-10 h-10 rounded-full"
@@ -24,22 +28,40 @@
                         :user="props.tweet.user"
                         :created_at="props.tweet.created_at"
                         :reply_to="props.tweet.reply_to"
+                        :modal="props.modal"
                     />
 
                     <!-- tweet body -->
                     <div>
-                        <p class="text-sm text-gray-800 dark:text-white">{{ props.tweet.content }}</p>
+                        <p class="text-sm" :class="[themeMode === true ? 'text-white' : 'text-gray-800']">
+                            {{ props.tweet.content }}
+                        </p>
 
                         <div class="mt-2" v-if="props.tweet.media?.length">
                             <img
                                 :src="`http://localhost:8000/storage/tweets/${props.tweet.media[0]?.url}`"
                                 alt=""
-                                class="max-h-[510px] w-auto object-cover rounded-2xl border border-gray-400 dark:border-gray-700"
+                                class="max-h-[510px] w-auto object-cover rounded-2xl"
+                                :class="[themeMode === true ? 'border border-gray-700' : 'border border-gray-400']"
                             />
                         </div>
                     </div>
 
-                    <TweetItemActions :tweet="tweet" :parent="props.parent" />
+                    <div v-if="props.modal">
+                        <span class="block text-sm text-gray-500 pt-4"
+                            >Replying to
+                            <span class="text-dim-600 hover:underline cursor-pointer">{{
+                                props.tweet.reply_to?.user?.username
+                            }}</span>
+                        </span>
+                    </div>
+
+                    <TweetItemActions
+                        v-if="!props.modal"
+                        :tweet="tweet"
+                        :parent="props.parent"
+                        @on-commit-click="handleCommitClick"
+                    />
                 </div>
             </div>
         </div>
@@ -48,7 +70,10 @@
 
 <script setup>
 import { EllipsisHorizontalIcon } from "@heroicons/vue/24/outline";
-import { use } from "h3";
+const { useThemeMode } = useTheme();
+const emitter = useEmitter();
+
+const themeMode = useThemeMode().value;
 
 const props = defineProps({
     tweet: {
@@ -59,6 +84,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    modal: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const isSamePath = () => {
@@ -66,10 +95,20 @@ const isSamePath = () => {
 };
 
 const navigateToTweet = () => {
-    if (isSamePath()) return;
+    if (isSamePath() || props.modal) return;
 
     navigateTo({
         path: `/status/${props.tweet.id}`,
     });
+};
+
+const handleCommitClick = () => {
+    emitter.$emit("replyTo", props.tweet);
+};
+
+const themeClass = () => {
+    if (!isSamePath() && props.modal === false) {
+        return themeMode === true ? "cursor-pointer hover:bg-white/5" : "cursor-pointer hover:bg-gray-50 ";
+    }
 };
 </script>

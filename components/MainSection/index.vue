@@ -13,7 +13,7 @@
                             @click="$router.back()"
                         />
                     </div>
-                    <span class="dark:text-white text-2xl font-semibold pl-4">Home</span>
+                    <span class="dark:text-white text-xl font-semibold pl-4">Home</span>
                 </div>
 
                 <div v-show="!withoutHeader" class="flex flex-row pt-5">
