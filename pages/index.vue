@@ -50,14 +50,20 @@ const { openPostTweetModal } = useTweets();
 const tweets = ref([]);
 const tweetsLoading = ref(true);
 
-try {
-    const { data } = await getTweets();
-    tweets.value = data.value.tweets;
-} catch (error) {
-    console.log(error);
-} finally {
-    tweetsLoading.value = false;
+async function getTweetsFun() {
+    try {
+        const data = await getTweets();
+        tweets.value = data.tweets;
+    } catch (error) {
+        console.log(error);
+    } finally {
+        tweetsLoading.value = false;
+    }
 }
+
+onMounted(() => {
+    getTweetsFun();
+});
 
 const handleModalOpen = () => {
     openPostTweetModal();

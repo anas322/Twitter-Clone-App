@@ -2,13 +2,15 @@
     <div class="flex flex-col">
         <!-- serach bar -->
         <div
-            class="flex flex-row gap-2 items-center py-1 pl-2.5 pr-2 border-none rounded-3xl overflow-hidden bg-dim-400 dark:bg-dim-800"
-            :class="{ 'outline-dim-600 outline-1 outline-double': outline }"
+            class="flex flex-row gap-2 items-center border-none rounded-3xl overflow-hidden bg-dim-400 dark:bg-dim-700"
+            :class="{ 'outline-dim-500 outline-1 outline-double': outline }"
         >
-            <MagnifyingGlassIcon class="w-6 h-6 text-gray-500" />
+            <div class="pl-4">
+                <MagnifyingGlassIcon class="w-6 h-6 p-[2px]" :class="outline ? 'text-dim-500' : 'text-gray-500'" />
+            </div>
             <input
-                type="search"
-                class="w-full py-2 text-sm bg-inherit focus-within:outline-none border-0 focus:ring-0 focus:outline-none rounded-3xl dark:bg-dim-800 dark:text-white"
+                type="text"
+                class="w-full p-3 text-xs bg-inherit focus-within:outline-none border-0 focus:ring-0 focus:outline-none rounded-3xl dark:text-white"
                 placeholder="search for Banana"
                 v-model="search"
             />

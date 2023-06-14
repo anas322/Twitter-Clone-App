@@ -45,7 +45,7 @@ const {
                     type="text"
                     class="block mt-1 w-full"
                     v-model="data.usernameOrEmail"
-                    :errors="errors.usernameOrEmail?.[0]"
+                    :errors="errors.username?.[0]"
                     autoFocus
                 />
             </div>

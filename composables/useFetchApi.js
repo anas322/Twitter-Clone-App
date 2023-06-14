@@ -37,13 +37,12 @@ export async function useFetchApi(
     try {
         return new Promise((resolve, reject) => {
             try {
-                const response = useFetch(path, {
+                const response = $fetch(path, {
                     baseURL: backendUrl,
                     ...options,
                     headers,
                     credentials: "include",
                 });
-
                 resolve(response);
             } catch (error) {
                 reject(error);
