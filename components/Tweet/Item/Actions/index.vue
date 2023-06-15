@@ -1,6 +1,6 @@
 <template>
     <div class="mt-2">
-        <div v-if="props.parent">
+        <div v-if="props.parent" :class="props.parent ? '-ml-12' : ''">
             <div class="border-b border-gray-200 dark:border-white/20 py-3 text-gray-500 text-sm">
                 <span>11:23 AM · Jun 13, 2023 · <span class="font-semibold dark:text-white">59.9K</span> Views</span>
             </div>
@@ -14,7 +14,8 @@
                 </span>
             </div>
         </div>
-        <div class="flex justify-between flex-row max-w-[425px]" :class="props.parent ? 'py-1' : ''">
+
+        <div class="flex justify-between flex-row" :class="props.parent ? 'py-1 ml-[-30px] w-full' : 'max-w-[425px]'">
             <!-- comments -->
             <TweetItemActionsIcon color="dim" :parent="props.parent" @on-click="emits('onCommitClick')">
                 <template #icon="{ classes }">

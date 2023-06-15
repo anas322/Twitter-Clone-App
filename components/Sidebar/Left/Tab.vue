@@ -1,7 +1,7 @@
 <template>
     <div>
         <NuxtLink
-            to="#"
+            to="/"
             class="flex items-center p-3 large:pr-6 w-min mx-auto meduim:mx-0 hover:bg-gray-200 rounded-full dark:text-white dark:hover:bg-white/20"
             :class="[defaultTransition]"
         >
@@ -21,6 +21,10 @@ const props = defineProps({
     active: {
         type: Boolean,
         default: false,
+    },
+    to: {
+        type: String,
+        default: "/",
     },
 });
 
