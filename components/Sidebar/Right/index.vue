@@ -43,6 +43,17 @@
                 </div>
             </SidebarRightPreviewCardItem>
         </SidebarRightPreviewCard>
+
+        <!-- footer -->
+        <ul class="flex flex-wrap gap-x-2 pl-4 pt-3">
+            <li class="dark:text-gray-500 text-sm hover:underline"><a href="#">Terms of Service</a></li>
+            <li class="dark:text-gray-500 text-sm hover:underline"><a href="#"> Privacy Policy</a></li>
+            <li class="dark:text-gray-500 text-sm hover:underline"><a href="#">Cookie Policy</a></li>
+            <li class="dark:text-gray-500 text-sm hover:underline"><a href="#">Accessibility</a></li>
+            <li class="dark:text-gray-500 text-sm hover:underline"><a href="#"> Ads info</a></li>
+            <li class="dark:text-gray-500 text-sm hover:underline"><a href="#"> More...</a></li>
+            <li class="dark:text-gray-500 text-sm hover:underline"><a href="#"> © 2023 X Corp.</a></li>
+        </ul>
     </div>
 </template>
 

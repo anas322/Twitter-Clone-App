@@ -1,6 +1,6 @@
 <template>
     <div :class="[props.modal === false ? 'border-b' : '', themeMode === true ? 'border-white/20' : 'border-gray-200']">
-        <div class="flex items-start space-x-3 pt-2 px-3">
+        <div class="flex items-start space-x-3 pt-4 px-3">
             <div class="flex-shrink-0">
                 <img
                     class="w-10 h-10 rounded-full"
@@ -219,21 +219,17 @@ const handleSubmit = async () => {
     }
 
     try {
-        const { data, error, pending } = await useFetchApi("api/user/tweets", {
+        const data = await useFetchApi("api/user/tweets", {
             method: "POST",
             body: formData,
         });
-        emits("onSuccess", data.value.tweet);
+        emits("onSuccess", data.tweet);
         loading.value = false;
 
-        if (data.value) {
-            console.log("Success:", data.value.message);
+        if (Object.keys(data.tweet).length) {
+            console.log(data.message);
             tweetContent.value = "";
             handleRemoveMedia();
-        }
-
-        if (error.value) {
-            console.log("Error:", error.value);
         }
     } catch (error) {
         loading.value = false;

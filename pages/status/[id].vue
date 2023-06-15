@@ -19,8 +19,10 @@
                     <div v-if="tweetsLoading" class="flex justify-center items-center h-24">
                         <UISpinner />
                     </div>
-
-                    <TweetListFeed v-else :tweets="tweet" parent />
+                    <div v-else class="relative">
+                        <span class="absolute left-8 top-12 bottom-44 block mt-1 mx-auto w-[2px] bg-white/20"></span>
+                        <TweetListFeed :tweets="tweet" parent />
+                    </div>
 
                     <TweetForm :reply_to="tweet[0].id" @on-success="handleFormSuccess" />
 
@@ -43,6 +45,7 @@
 </template>
 
 <script setup>
+definePageMeta({ middleware: ["auth"] });
 const { getSingleTweet } = useTweets();
 
 const tweetsLoading = ref(false);
@@ -55,10 +58,10 @@ const id = computed(() => {
 try {
     tweetsLoading.value = true;
 
-    const { data } = await getSingleTweet(id.value);
+    const data = await getSingleTweet(id.value);
 
-    tweet.value = [data.value.tweet];
-    replies.value = data.value.tweet.replies;
+    tweet.value = flattenReplies(data.tweet);
+    replies.value = data.tweet.replies;
 } catch (error) {
     console.log(error);
 } finally {
@@ -66,6 +69,22 @@ try {
 }
 
 const handleFormSuccess = (tweet) => {
-    replies.value.push(tweet);
+    replies.value.unshift(tweet);
 };
+
+function flattenReplies(tweet) {
+    const flattenedReplies = [];
+
+    function flatten(reply) {
+        flattenedReplies.unshift(reply);
+
+        if (reply.reply_to) {
+            flatten(reply.reply_to);
+        }
+    }
+
+    flatten(tweet);
+
+    return flattenedReplies;
+}
 </script>

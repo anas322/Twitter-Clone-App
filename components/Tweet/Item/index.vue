@@ -1,5 +1,10 @@
 <template>
-    <div :class="[props.modal === false ? 'border-b' : '', themeMode === true ? 'border-white/20' : 'border-gray-200']">
+    <div
+        :class="[
+            (props.modal === false && props.parent) || props.home ? 'border-b' : '',
+            themeMode === true ? 'border-white/20' : 'border-gray-200',
+        ]"
+    >
         <div
             class="relative flex items-start space-x-3 pt-2"
             :class="[themeClass(), props.modal ? '' : 'px-3']"
@@ -74,7 +79,7 @@ const { useThemeMode } = useTheme();
 const emitter = useEmitter();
 
 const themeMode = useThemeMode().value;
-
+console.log(props.parent);
 const props = defineProps({
     tweet: {
         type: Object,
@@ -85,6 +90,10 @@ const props = defineProps({
         default: false,
     },
     modal: {
+        type: Boolean,
+        default: false,
+    },
+    home: {
         type: Boolean,
         default: false,
     },

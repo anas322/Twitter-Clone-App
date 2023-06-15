@@ -22,14 +22,14 @@
                         <UISpinner />
                     </div>
 
-                    <TweetListFeed v-else :tweets="tweets" />
+                    <TweetListFeed v-else :tweets="tweets" home />
                 </MainSection>
             </main>
             <!-- end main content -->
 
             <!-- start right sidebar -->
             <div class="hidden pt-2 meduim:block meduim:col-span-3">
-                <div class="meduim:max-w-[360px] ml-auto">
+                <div class="meduim:max-w-[360px] ml-auto h-full">
                     <div class="sticky top-0">
                         <SidebarRight />
                     </div>
@@ -61,7 +61,7 @@ async function getTweetsFun() {
     }
 }
 
-onMounted(() => {
+onBeforeMount(() => {
     getTweetsFun();
 });
 

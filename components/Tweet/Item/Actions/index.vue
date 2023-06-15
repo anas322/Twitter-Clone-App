@@ -1,8 +1,22 @@
 <template>
     <div class="mt-2">
-        <div class="flex justify-between flex-row max-w-[425px]">
+        <div v-if="props.parent">
+            <div class="border-b border-gray-200 dark:border-white/20 py-3 text-gray-500 text-sm">
+                <span>11:23 AM · Jun 13, 2023 · <span class="font-semibold dark:text-white">59.9K</span> Views</span>
+            </div>
+
+            <div class="border-b border-gray-200 dark:border-white/20 py-3 text-gray-500 text-sm">
+                <span class="space-x-3">
+                    <span><span class="font-semibold dark:text-white">120</span> Retweets </span>
+                    <span><span class="font-semibold dark:text-white">540</span> Quotes </span>
+                    <span><span class="font-semibold dark:text-white">1,405</span> Likes </span>
+                    <span><span class="font-semibold dark:text-white">59</span> Bookmarks </span>
+                </span>
+            </div>
+        </div>
+        <div class="flex justify-between flex-row max-w-[425px]" :class="props.parent ? 'py-1' : ''">
             <!-- comments -->
-            <TweetItemActionsIcon color="dim" @on-click="emits('onCommitClick')">
+            <TweetItemActionsIcon color="dim" :parent="props.parent" @on-click="emits('onCommitClick')">
                 <template #icon="{ classes }">
                     <ChatBubbleOvalLeftIcon :class="classes" />
                 </template>
@@ -10,7 +24,7 @@
                 <template #default v-if="!props.parent"> {{ repliesCount }} </template>
             </TweetItemActionsIcon>
 
-            <TweetItemActionsIcon color="green">
+            <TweetItemActionsIcon color="green" :parent="props.parent">
                 <template #icon="{ classes }">
                     <ArrowPathRoundedSquareIcon :class="classes" />
                 </template>
@@ -23,7 +37,7 @@
                 <span class="text-sm text-gray-500" v-if="!props.parent">5</span>
             </div>
 
-            <TweetItemActionsIcon color="dim">
+            <TweetItemActionsIcon color="dim" :parent="props.parent">
                 <template #icon="{ classes }">
                     <svg :class="classes" viewBox="0 0 24 24" aria-hidden="true" fill="CurrentColor">
                         <g>
@@ -36,7 +50,7 @@
                 <template #default v-if="!props.parent"> 5 </template>
             </TweetItemActionsIcon>
 
-            <TweetItemActionsIcon color="dim">
+            <TweetItemActionsIcon color="dim" :parent="props.parent">
                 <template #icon="{ classes }">
                     <ArrowUpTrayIcon :class="classes" />
                 </template>
