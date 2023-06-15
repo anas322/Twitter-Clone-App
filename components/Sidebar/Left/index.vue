@@ -21,7 +21,7 @@
 
             <SidebarLeftTab>
                 <template #icon>
-                    <HashtagIcon class="w-7" />
+                    <MagnifyingGlassIcon class="w-7" />
                 </template>
                 <template #name> Explore </template>
             </SidebarLeftTab>
@@ -52,6 +52,13 @@
                     <BookmarkIcon class="w-7" />
                 </template>
                 <template #name> Bookmarks </template>
+            </SidebarLeftTab>
+
+            <SidebarLeftTab>
+                <template #icon>
+                    <CheckBadgeIcon class="w-7" />
+                </template>
+                <template #name> Verified </template>
             </SidebarLeftTab>
 
             <SidebarLeftTab>
@@ -97,7 +104,8 @@
 import { HomeIcon } from "@heroicons/vue/24/solid";
 
 import {
-    HashtagIcon,
+    CheckBadgeIcon,
+    MagnifyingGlassIcon,
     BellIcon,
     BookmarkIcon,
     DocumentTextIcon,

@@ -10,8 +10,8 @@
             </div>
             <input
                 type="text"
-                class="w-full p-3 text-xs bg-inherit focus-within:outline-none border-0 focus:ring-0 focus:outline-none rounded-3xl dark:text-white"
-                placeholder="search for Banana"
+                class="w-full p-2 text-sm bg-inherit focus-within:outline-none border-0 focus:ring-0 focus:outline-none rounded-3xl dark:text-white"
+                placeholder="Search for Banana 🍌"
                 v-model="search"
             />
         </div>
