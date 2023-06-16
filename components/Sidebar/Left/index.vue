@@ -100,7 +100,9 @@
 
         <!-- user avatar and name,username  -->
         <div class="absolute bottom-4 left-1/2 -translate-x-1/2">
-            <div class="relative flex flex-row gap-2 p-2 dark:hover:bg-white/10 rounded-full cursor-pointer">
+            <div
+                class="relative flex flex-row gap-2 p-2 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full cursor-pointer"
+            >
                 <div class="w-10">
                     <img
                         class="w-10 h-10 rounded-full"
@@ -114,7 +116,8 @@
                 </div>
 
                 <span class="hidden large:block absolute right-3 top-1/2 -translate-y-1/2"
-                    ><EllipsisHorizontalIcon class="h-8 w-8 p-1 font-bold text-gray-200 rounded-full"
+                    ><EllipsisHorizontalIcon
+                        class="h-8 w-8 p-1 font-bold text-gray-500 dark:text-gray-200 rounded-full"
                 /></span>
             </div>
         </div>

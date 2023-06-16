@@ -1,5 +1,6 @@
 <template>
-    <div :class="{ dark: darkMode }">
+    <NuxtLayout>
+        <!-- <div :class="{ dark: darkMode }"> -->
         <div class="bg-white dark:bg-dim-900">
             <LoadingPage v-if="isLoading" />
 
@@ -54,7 +55,8 @@
                 </div>
             </UIDialog>
         </div>
-    </div>
+        <!-- </div> -->
+    </NuxtLayout>
 </template>
 
 <script setup>
@@ -105,7 +107,7 @@ const { useAuthLoading } = useAuth();
 const isLoading = computed(() => useAuthLoading().value);
 
 const handleFormSucess = (tweet) => {
-    // tweets.value.unshift(tweet);
+    emitter.$emit("newTweet", tweet);
     closePostTweetModal();
 };
 
