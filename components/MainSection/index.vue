@@ -18,7 +18,7 @@
 
                 <div v-show="!withoutHeader" class="flex flex-row pt-5">
                     <div class="w-1/2 py-3 px-28 hover:bg-gray-100 cursor-pointer dark:hover:bg-white/10">
-                        <span class="relative" :class="[forYouClasses]"
+                        <span class="relative whitespace-nowrap" :class="[forYouClasses]"
                             >For you
                             <span
                                 v-if="!active"

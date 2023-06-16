@@ -5,6 +5,7 @@
         :tweet="tweet"
         :parent="isLastItem(index)"
         :home="props.home"
+        :replies="props.replies"
     />
 </template>
 
@@ -19,6 +20,10 @@ const props = defineProps({
         default: false,
     },
     home: {
+        type: Boolean,
+        default: false,
+    },
+    replies: {
         type: Boolean,
         default: false,
     },

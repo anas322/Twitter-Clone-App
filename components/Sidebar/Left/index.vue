@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col h-screen space-y-3">
+    <div class="relative flex flex-col h-screen space-y-3">
         <div
             class="p-2 my-2 mx-auto large:mx-0 w-min hover:bg-blue-50 rounded-full dark:hover:bg-white/20"
             :class="defaultTransition"
@@ -68,7 +68,7 @@
                 <template #name> Profile </template>
             </SidebarLeftTab>
 
-            <SidebarLeftTab>
+            <SidebarLeftTab moreIcon to="#">
                 <template #icon>
                     <EllipsisHorizontalCircleIcon class="w-7" />
                 </template>
@@ -97,12 +97,32 @@
                 </button>
             </div>
         </div>
+
+        <!-- user avatar and name,username  -->
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2">
+            <div class="relative flex flex-row gap-2 p-2 dark:hover:bg-white/10 rounded-full cursor-pointer">
+                <div class="w-10">
+                    <img
+                        class="w-10 h-10 rounded-full"
+                        src="https://pbs.twimg.com/profile_images/1624685067577573378/ryXZhuCt_normal.jpg"
+                        alt=""
+                    />
+                </div>
+                <div class="hidden large:flex flex-col pr-24">
+                    <h1 class="text-sm dark:text-white font-semibold hover:underline cursor-pointer">Anas</h1>
+                    <span class="text-sm text-gray-500">@username </span>
+                </div>
+
+                <span class="hidden large:block absolute right-3 top-1/2 -translate-y-1/2"
+                    ><EllipsisHorizontalIcon class="h-8 w-8 p-1 font-bold text-gray-200 rounded-full"
+                /></span>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
 import { HomeIcon } from "@heroicons/vue/24/solid";
-
 import {
     CheckBadgeIcon,
     MagnifyingGlassIcon,
@@ -112,6 +132,7 @@ import {
     UserIcon,
     EllipsisHorizontalCircleIcon,
     EnvelopeIcon,
+    EllipsisHorizontalIcon,
 } from "@heroicons/vue/24/outline";
 
 const emits = defineEmits(["onTweet"]);

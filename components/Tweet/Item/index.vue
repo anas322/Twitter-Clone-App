@@ -1,7 +1,7 @@
 <template>
     <div
         :class="[
-            (props.modal === false && props.parent) || props.home ? 'border-b' : '',
+            (props.modal === false && props.parent) || props.home || props.replies ? 'border-b' : '',
             themeMode === true ? 'border-white/20' : 'border-gray-200',
         ]"
     >
@@ -79,7 +79,7 @@ const { useThemeMode } = useTheme();
 const emitter = useEmitter();
 
 const themeMode = useThemeMode().value;
-console.log(props.parent);
+
 const props = defineProps({
     tweet: {
         type: Object,
@@ -94,6 +94,10 @@ const props = defineProps({
         default: false,
     },
     home: {
+        type: Boolean,
+        default: false,
+    },
+    replies: {
         type: Boolean,
         default: false,
     },

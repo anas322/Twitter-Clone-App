@@ -1,5 +1,6 @@
 export default () => {
     const usePostTweetModal = () => useState("post_tweet_modal", () => false);
+    const useDisplayModal = () => useState("display_modal", () => false);
     const useReplyTweet = () => useState("reply_tweet", () => null);
 
     const closePostTweetModal = () => {
@@ -17,6 +18,15 @@ export default () => {
         postTweetModal.value = true;
 
         setReplyTo(tweet);
+    };
+
+    const openDisplayModal = () => {
+        const DisplayModal = useDisplayModal();
+        DisplayModal.value = true;
+    };
+    const closeDisplayModal = () => {
+        const DisplayModal = useDisplayModal();
+        DisplayModal.value = false;
     };
 
     const getTweets = async () => {
@@ -48,5 +58,8 @@ export default () => {
         usePostTweetModal,
         openPostTweetModal,
         useReplyTweet,
+        closeDisplayModal,
+        openDisplayModal,
+        useDisplayModal,
     };
 };

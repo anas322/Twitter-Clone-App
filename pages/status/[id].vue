@@ -26,7 +26,7 @@
 
                     <TweetForm :reply_to="tweet[0].id" @on-success="handleFormSuccess" />
 
-                    <TweetListFeed v-if="replies.length" :tweets="replies" />
+                    <TweetListFeed v-if="replies.length" :tweets="replies" replies />
                 </MainSection>
             </main>
             <!-- end main content -->
