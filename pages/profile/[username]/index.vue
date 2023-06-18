@@ -1,13 +1,18 @@
 <template>
     <div>
-        <MainSection withoutHeader profile :tweetsCount="tweetsCount">
+        <MainSection withoutHeader profile :tweetsCount="dataCounts.tweetsCount">
             <ProfileHeader />
             <ProfileTabs />
 
             <div v-if="tweetsLoading" class="flex justify-center items-center h-24">
                 <UISpinner />
             </div>
-            <TweetListFeed v-else :tweets="tweets" home />
+            <div v-else>
+                <TweetListFeed v-if="tweets.length > 0" :tweets="tweets" home />
+                <div v-else class="flex justify-center items-center h-24">
+                    <div class="text-gray-500">No Bananas founds 😢🍌</div>
+                </div>
+            </div>
         </MainSection>
     </div>
 </template>
@@ -23,11 +28,11 @@ useHead({
 const username = useRoute().params.username;
 const tweets = ref([]);
 const tweetsLoading = ref(true);
-const tweetsCount = ref("");
+const dataCounts = ref({});
 
 const { getUserTweets } = useTweets();
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
     getUserTweetsFun();
 });
 
@@ -36,8 +41,11 @@ const getUserTweetsFun = async () => {
         tweetsLoading.value = true;
         const data = await getUserTweets(username);
         tweets.value = data.tweets.filter((tweet) => !("reply_to" in tweet));
-        tweetsCount.value = data.tweetsCount;
+        // tweetsCount.value = Object.fromEntries(Object.entries(data).filter(([key, value]) => key !== "tweets"));
     } catch (error) {
+        if (error.status == 404) {
+            navigateTo("/profile/username/notfound");
+        }
         console.log(error);
     } finally {
         tweetsLoading.value = false;

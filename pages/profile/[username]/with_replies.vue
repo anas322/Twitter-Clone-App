@@ -7,7 +7,12 @@
             <div v-if="tweetsLoading" class="flex justify-center items-center h-24">
                 <UISpinner />
             </div>
-            <TweetListFeed v-else :tweets="tweets" home />
+            <div v-else>
+                <TweetListFeed v-if="tweets.length > 0" :tweets="tweets" home />
+                <div v-else class="flex justify-center items-center h-24">
+                    <div class="text-gray-500">No replies founds 😢🍌</div>
+                </div>
+            </div>
         </MainSection>
     </div>
 </template>
