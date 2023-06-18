@@ -1,6 +1,5 @@
 <template>
     <NuxtLayout>
-        <!-- <div :class="{ dark: darkMode }"> -->
         <div class="bg-white dark:bg-dim-900">
             <LoadingPage v-if="isLoading" />
 
@@ -55,7 +54,6 @@
                 </div>
             </UIDialog>
         </div>
-        <!-- </div> -->
     </NuxtLayout>
 </template>
 

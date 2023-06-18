@@ -51,6 +51,17 @@ export default () => {
         });
     };
 
+    const getUserTweets = async (username) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await useFetchApi(`/api/profile/tweets/${username}`);
+                resolve(response);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+
     return {
         getTweets,
         getSingleTweet,
@@ -61,5 +72,6 @@ export default () => {
         closeDisplayModal,
         openDisplayModal,
         useDisplayModal,
+        getUserTweets,
     };
 };

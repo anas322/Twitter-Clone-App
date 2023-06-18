@@ -1,5 +1,5 @@
 <template>
-    <MainSection>
+    <MainSection title="Home">
         <TweetForm @on-success="handleFormSuccess" />
 
         <div v-if="tweetsLoading" class="flex justify-center items-center h-24">

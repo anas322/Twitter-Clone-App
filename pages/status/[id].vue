@@ -1,5 +1,5 @@
 <template>
-    <MainSection withoutHeader>
+    <MainSection withoutHeader title="Tweet">
         <div v-if="tweetsLoading" class="flex justify-center items-center h-24">
             <UISpinner />
         </div>

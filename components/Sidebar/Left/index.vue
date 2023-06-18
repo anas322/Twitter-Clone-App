@@ -61,7 +61,7 @@
                 <template #name> Verified </template>
             </SidebarLeftTab>
 
-            <SidebarLeftTab>
+            <SidebarLeftTab :to="`/profile/${user?.username}`">
                 <template #icon>
                     <UserIcon class="w-7" />
                 </template>
@@ -102,6 +102,7 @@
         <div class="absolute bottom-4 left-1/2 -translate-x-1/2">
             <div
                 class="relative flex flex-row gap-2 p-2 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full cursor-pointer"
+                @click="handleDisplay"
             >
                 <div class="w-10">
                     <img
@@ -119,6 +120,21 @@
                     ><EllipsisHorizontalIcon
                         class="h-8 w-8 p-1 font-bold text-gray-500 dark:text-gray-200 rounded-full"
                 /></span>
+            </div>
+
+            <!-- logout dropdown -->
+            <div v-if="toggleLogout" class="absolute -top-[130%] left-1/2 -translate-x-1/2">
+                <div
+                    class="relative space-y-2 rounded-lg overflow-hidden py-2 w-56 bg-white dark:bg-dim-900 shadow-lg shadow-gray-500 dark:shadow-white/10"
+                >
+                    <div class="p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/10" @click="handleLogout">
+                        <span class="dark:text-white font-medium whitespace-nowrap">Log out @{{ user.username }}</span>
+                    </div>
+                </div>
+                <span
+                    class="absolute -bottom-4 left-1/2 -translate-x-1/2 border-8"
+                    style="border-color: black transparent transparent transparent"
+                ></span>
             </div>
         </div>
     </div>
@@ -139,6 +155,18 @@ import {
 } from "@heroicons/vue/24/outline";
 
 const emits = defineEmits(["onTweet"]);
+const { logout } = useAuth();
 
 const { defaultTransition } = useTailWindConfig();
+const { user } = useAuth();
+const toggleLogout = ref(false);
+
+const handleDisplay = () => {
+    toggleLogout.value = !toggleLogout.value;
+};
+
+const handleLogout = () => {
+    toggleLogout.value = false;
+    logout();
+};
 </script>

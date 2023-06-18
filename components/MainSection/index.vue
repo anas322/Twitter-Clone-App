@@ -13,7 +13,10 @@
                             @click="$router.back()"
                         />
                     </div>
-                    <span class="dark:text-white text-xl font-semibold pl-4">Home</span>
+                    <div>
+                        <span class="dark:text-white text-xl font-semibold pl-4">{{ props.title }}</span>
+                        <span v-if="profile" class="block text-xs text-gray-500 pl-4">{{ tweetsCount ?? "" }}</span>
+                    </div>
                 </div>
 
                 <div v-show="!withoutHeader" class="flex flex-row pt-5">
@@ -66,6 +69,18 @@ const props = defineProps({
     withoutHeader: {
         type: Boolean,
         default: false,
+    },
+    profile: {
+        type: Boolean,
+        default: false,
+    },
+    title: {
+        type: String,
+        default: "Home",
+    },
+    tweetsCount: {
+        type: String,
+        default: null,
     },
 });
 
