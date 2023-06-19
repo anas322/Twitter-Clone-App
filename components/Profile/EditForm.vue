@@ -88,14 +88,8 @@
                 </div>
 
                 <div>
-                    <div
-                        class="relative flex flex-col w-full px-2 rounded-md border border-gray-700"
-                        :class="{
-                            ' border-2 border-red-600 ': data.errors.bio,
-                            'border-2 border-dim-600 ': !data.errors.bio,
-                        }"
-                    >
-                        <label for="bio" :class="[!data.errors.bio ? 'text-dim-600' : 'text-gray-700']">bio</label>
+                    <div class="relative flex flex-col w-full px-2 rounded-md border border-gray-700">
+                        <label for="bio" class="text-gray-700">bio</label>
                         <textarea
                             id="bio"
                             class="w-full p-0 text-white bg-inherit focus:outline-none focus:ring-0 border-none resize-none"
@@ -108,20 +102,11 @@
                             >{{ dataLength.bioLength }}/ 160</span
                         >
                     </div>
-                    <span v-if="data.errors.bio" class="text-red-600 text-sm pl-2">bio can’t be blank</span>
                 </div>
 
                 <div>
-                    <div
-                        class="relative flex flex-col w-full px-2 rounded-md border border-gray-700"
-                        :class="{
-                            ' border-2 border-red-600 ': data.errors.location,
-                            'border-2 border-dim-600 ': !data.errors.location,
-                        }"
-                    >
-                        <label for="location" :class="[!data.errors.location ? 'text-dim-600' : 'text-gray-700']"
-                            >location</label
-                        >
+                    <div class="relative flex flex-col w-full px-2 rounded-md border border-gray-700">
+                        <label for="location" class="text-gray-700">location</label>
                         <input
                             type="text"
                             id="location"
@@ -134,7 +119,6 @@
                             >{{ dataLength.locationLength }}/ 30</span
                         >
                     </div>
-                    <span v-if="data.errors.location" class="text-red-600 text-sm pl-2">location can’t be blank</span>
                 </div>
 
                 <div>
@@ -173,15 +157,14 @@ const avatarImagePreview = ref(props.profile.avatar || null);
 
 const dataLength = computed(() => {
     return {
-        nameLength: data.profile.name.length,
-        bioLength: data.profile.bio.length,
-        locationLength: data.profile.location.length,
+        nameLength: data.profile.name?.length,
+        bioLength: data.profile.bio?.length,
+        locationLength: data.profile.location?.length,
     };
 });
 
 const handleValidateDataLength = (e) => {
     const name = e.target.dataset.name;
-    const currentLength = e.target.value.length;
     if (name == "nameLength") {
         let maxLength = 50;
         data.profile.name = e.target.value.slice(0, maxLength);
@@ -201,15 +184,9 @@ const isValidated = computed(() => {
 
 //validate empty fields
 const validateForm = (e) => {
-    const errorsData = { name: false, bio: false, location: false };
+    const errorsData = { name: false };
     if (!data.profile.name) {
         errorsData.name = true;
-    }
-    if (!data.profile.bio) {
-        errorsData.bio = true;
-    }
-    if (!data.profile.location) {
-        errorsData.location = true;
     }
     data.errors = errorsData;
     handleValidateDataLength(e);

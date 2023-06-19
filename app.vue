@@ -87,8 +87,11 @@ const {
     useReplyTweet,
     openDisplayModal,
 } = useTweets();
-
+const { useThemeMode, turnOnLightMode, turnOnDarkMode } = useTheme();
+const darkMode = useThemeMode();
 const { useEditProfileModal, closeEditProfileModal, openEditProfileModal, useProfileData } = useProfile();
+const { useAuthLoading } = useAuth();
+const emitter = useEmitter();
 
 const postTweetModal = usePostTweetModal();
 const displayModal = useDisplayModal();
@@ -96,7 +99,8 @@ const replyTweet = useReplyTweet();
 const editProfiletModal = useEditProfileModal();
 const profile = useProfileData();
 
-const emitter = useEmitter();
+const pickedMode = ref(darkMode.value ? "dark" : "default");
+const isLoading = computed(() => useAuthLoading().value);
 
 emitter.$on("replyTo", (tweet) => {
     openPostTweetModal(tweet);
@@ -109,14 +113,6 @@ emitter.$on("display", () => {
 emitter.$on("editProfile", (profile) => {
     openEditProfileModal(profile);
 });
-
-const { useThemeMode, turnOnLightMode, turnOnDarkMode } = useTheme();
-
-const darkMode = useThemeMode();
-
-const pickedMode = ref(darkMode.value ? "dark" : "default");
-const { useAuthLoading } = useAuth();
-const isLoading = computed(() => useAuthLoading().value);
 
 const handleFormSucess = (tweet) => {
     emitter.$emit("newTweet", tweet);
