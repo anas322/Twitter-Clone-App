@@ -13,6 +13,10 @@
                 <TweetForm @on-success="handleFormSucess" :reply_to="replyTweet?.id" modal />
             </UIDialog>
 
+            <UIDialog :isOpen="editProfiletModal" @on-close="handleProfileModalClose">
+                <ProfileEditForm @on-success="handleProfileFormSucess" :profile="profile" />
+            </UIDialog>
+
             <UIDialog :isOpen="displayModal" @on-close="handleDisplayClose">
                 <span class="block text-2xl font-bold text-center" :class="[darkMode ? 'text-white' : 'text-black']"
                     >Customize your view</span
@@ -84,16 +88,26 @@ const {
     openDisplayModal,
 } = useTweets();
 
+const { useEditProfileModal, closeEditProfileModal, openEditProfileModal, useProfileData } = useProfile();
+
 const postTweetModal = usePostTweetModal();
 const displayModal = useDisplayModal();
 const replyTweet = useReplyTweet();
+const editProfiletModal = useEditProfileModal();
+const profile = useProfileData();
+
 const emitter = useEmitter();
+
 emitter.$on("replyTo", (tweet) => {
     openPostTweetModal(tweet);
 });
 
 emitter.$on("display", () => {
     openDisplayModal();
+});
+
+emitter.$on("editProfile", (profile) => {
+    openEditProfileModal(profile);
 });
 
 const { useThemeMode, turnOnLightMode, turnOnDarkMode } = useTheme();
@@ -107,6 +121,11 @@ const isLoading = computed(() => useAuthLoading().value);
 const handleFormSucess = (tweet) => {
     emitter.$emit("newTweet", tweet);
     closePostTweetModal();
+};
+
+const handleProfileFormSucess = () => {
+    useRouter().go();
+    closeEditProfileModal();
 };
 
 const handleModalClose = () => {
@@ -128,5 +147,9 @@ const SwitchToDarkMode = () => {
     turnOnDarkMode();
     closeDisplayModal();
     useRouter().go();
+};
+
+const handleProfileModalClose = () => {
+    closeEditProfileModal();
 };
 </script>

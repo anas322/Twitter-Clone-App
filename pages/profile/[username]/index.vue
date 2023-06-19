@@ -1,6 +1,6 @@
 <template>
     <div>
-        <MainSection withoutHeader profile :tweetsCount="dataCounts.tweetsCount">
+        <MainSection withoutHeader profile :tweetsCount="tweetsCount">
             <ProfileHeader />
             <ProfileTabs />
 
@@ -28,7 +28,7 @@ useHead({
 const username = useRoute().params.username;
 const tweets = ref([]);
 const tweetsLoading = ref(true);
-const dataCounts = ref({});
+const tweetsCount = ref("");
 
 const { getUserTweets } = useTweets();
 
@@ -41,7 +41,7 @@ const getUserTweetsFun = async () => {
         tweetsLoading.value = true;
         const data = await getUserTweets(username);
         tweets.value = data.tweets.filter((tweet) => !("reply_to" in tweet));
-        // tweetsCount.value = Object.fromEntries(Object.entries(data).filter(([key, value]) => key !== "tweets"));
+        tweetsCount.value = data.tweetsCount;
     } catch (error) {
         if (error.status == 404) {
             navigateTo("/profile/username/notfound");

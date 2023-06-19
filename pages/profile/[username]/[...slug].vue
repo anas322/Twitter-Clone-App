@@ -1,7 +1,7 @@
 <template>
     <div>
         <MainSection withoutHeader profile title="profile">
-            <ProfileHeader userNotFound />
+            <ProfileHeader :userNotFound="true" />
 
             <div class="flex flex-col justify-center items-center h-24 mt-16">
                 <div class="dark:text-white text-2xl font-bold">This account doesn’t exist 😢🍌</div>

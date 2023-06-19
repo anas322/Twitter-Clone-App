@@ -11,7 +11,7 @@
                         class="w-full h-48 object-cover"
                     />
                 </div>
-                <div class="flex justify-start -mt-16 pl-5">
+                <div class="flex justify-between -mt-16 pl-5">
                     <img
                         v-if="profileData.avatar"
                         :src="profileData.avatar"
@@ -22,10 +22,18 @@
                         v-else
                         class="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-black bg-gray-600"
                     />
+                    <div class="self-center mt-12 mr-4">
+                        <button
+                            class="border !border-gray-500 px-3 py-1 font-semibold text-sm rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-all dark:border-white dark:text-white"
+                            @click="handleOpenEditProfileModal"
+                        >
+                            Edit profile
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div v-if="props.userNotFound" class="flex flex-col gap-y-4 p-3">
+            <div v-if="!props.userNotFound" class="flex flex-col gap-y-4 p-3">
                 <!-- name and username  -->
                 <div class="flex flex-col justify-start">
                     <span class="text-lg font-bold dark:text-white">{{ profileData.user?.name }}</span>
@@ -77,6 +85,7 @@ const props = defineProps({
 
 const username = useRoute().params.username;
 const { getUserProfile } = useProfile();
+const emitter = useEmitter();
 
 const profileData = ref({});
 
@@ -90,5 +99,15 @@ const getUserProfileFun = async () => {
     } catch (error) {
         console.log(error);
     }
+};
+
+const handleOpenEditProfileModal = () => {
+    emitter.$emit("editProfile", {
+        avatar: profileData.value.avatar,
+        banner: profileData.value.banner,
+        bio: profileData.value.bio,
+        location: profileData.value.location,
+        name: profileData.value.user.name,
+    });
 };
 </script>
