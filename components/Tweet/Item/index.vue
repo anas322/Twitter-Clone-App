@@ -7,7 +7,7 @@
     >
         <div
             class="relative flex items-start space-x-3 pt-2"
-            :class="[themeClass(), props.modal ? '' : 'px-3']"
+            :class="[themeClass(), props.modal ? '' : 'px-3', { 'bg-white dark:bg-dim-900': props.parent }]"
             @click="navigateToTweet"
         >
             <span
@@ -109,11 +109,18 @@
                         :created_at="props.tweet.created_at"
                         :reply_to="props.tweet.reply_to"
                         :modal="props.modal"
+                        :parent="props.parent"
                     />
 
                     <!-- tweet body -->
                     <div>
-                        <p class="text-sm" :class="[themeMode === true ? 'text-white' : 'text-gray-800']">
+                        <p
+                            class="text-sm"
+                            :class="[
+                                themeMode === true ? 'text-white' : 'text-gray-800',
+                                { 'pt-8 -ml-[50px]': props.parent },
+                            ]"
+                        >
                             {{ props.tweet.content }}
                         </p>
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex flex-row items-start space-x-2">
+        <div class="flex items-start" :class="[!props.parent ? 'flex-row space-x-2' : 'flex-col']">
             <h1
                 class="text-sm font-semibold hover:underline cursor-pointer"
                 :class="themeMode === true ? 'text-white' : ''"
@@ -12,8 +12,8 @@
             <NuxtLink :to="`/profile/${username}`" class="flex items-start">
                 <span class="text-sm text-gray-500">{{ props.user.usernameWithAt }} </span>
             </NuxtLink>
-            <span class="text-sm text-gray-500">.</span>
-            <span class="text-sm text-gray-500">{{ props.created_at }}</span>
+            <span v-if="!props.parent" class="text-sm text-gray-500">.</span>
+            <span v-if="!props.parent" class="text-sm text-gray-500">{{ props.created_at }}</span>
         </div>
 
         <div v-if="props.reply_to && !props.modal">
@@ -47,6 +47,10 @@ const props = defineProps({
         required: false,
     },
     modal: {
+        type: Boolean,
+        default: false,
+    },
+    parent: {
         type: Boolean,
         default: false,
     },

@@ -1,12 +1,15 @@
 <template>
     <MainSection withoutHeader title="Tweet">
+        <Head>
+            <Title>{{ tweet[0]?.user.name }} on Twitter: {{ tweet[0]?.content }}</Title>
+        </Head>
         <div v-if="tweetsLoading" class="flex justify-center items-center h-24">
             <UISpinner />
         </div>
         <div v-else class="relative">
             <span
                 v-if="tweet.length > 1"
-                class="absolute left-8 top-12 bottom-44 block mt-1 mx-auto w-[2px] bg-white/20"
+                class="absolute left-8 top-12 bottom-60 block mt-1 mx-auto w-[2px] bg-white/20"
             ></span>
             <TweetListFeed :tweets="tweet" parent />
         </div>
