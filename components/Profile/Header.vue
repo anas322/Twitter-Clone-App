@@ -24,11 +24,33 @@
                     />
                     <div class="self-center mt-12 mr-4">
                         <button
+                            v-if="profileData.ownsProfile"
                             class="border !border-gray-500 px-3 py-1 font-semibold text-sm rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-all dark:border-white dark:text-white"
                             @click="handleOpenEditProfileModal"
                         >
                             Edit profile
                         </button>
+
+                        <div v-else>
+                            <button
+                                v-if="!profileData.isAuthUserFollowThisProfile"
+                                class="px-4 py-1 font-semibold rounded-full bg-black text-white hover:bg-black/80 dark:hover:bg-white/80 dark:text-black dark:bg-white transition-all"
+                                :disabled="loading"
+                                @click="handleFollow"
+                            >
+                                Follow
+                            </button>
+                            <button
+                                v-if="profileData.isAuthUserFollowThisProfile"
+                                class="px-3 py-1 border !border-gray-500 hover:!border-red-600 hover:!bg-red-600/20 hover:!text-red-600 font-semibold text-sm rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-all dark:border-white dark:text-white"
+                                :disabled="loading"
+                                @mouseenter="handleMouseEnter"
+                                @mouseleave="handleMouseLeave"
+                                @click="handleUnfollow"
+                            >
+                                {{ followingButtonText }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,15 +82,21 @@
 
                 <!-- following and followers  -->
                 <div class="flex gap-4">
-                    <div class="flex items-center gap-1">
-                        <span class="text-sm font-semibold dark:text-white">1,000</span>
+                    <NuxtLink
+                        :to="`/profile/${username}/following`"
+                        class="flex items-center gap-1 hover:underline dark:hover:text-white cursor-pointer"
+                    >
+                        <span class="text-sm font-semibold dark:text-white">{{ profileData.followingCount }}</span>
                         <span class="text-gray-500 text-sm">Following</span>
-                    </div>
+                    </NuxtLink>
 
-                    <div class="flex items-center gap-1">
-                        <span class="text-sm font-semibold dark:text-white">1,000</span>
+                    <NuxtLink
+                        :to="`/profile/${username}/followers`"
+                        class="flex items-center gap-1 hover:underline dark:hover:text-white cursor-pointer"
+                    >
+                        <span class="text-sm font-semibold dark:text-white">{{ profileData.followersCount }}</span>
                         <span class="text-gray-500 text-sm">Followers</span>
-                    </div>
+                    </NuxtLink>
                 </div>
             </div>
         </div>
@@ -84,11 +112,12 @@ const props = defineProps({
 });
 
 const username = useRoute().params.username;
-const { getUserProfile } = useProfile();
+const { getUserProfile, unfollowProfile, followProfile } = useProfile();
 const emitter = useEmitter();
 
 const profileData = ref({});
-
+const followingButtonText = ref("Following");
+const loading = ref(false);
 onBeforeMount(() => {
     getUserProfileFun();
 });
@@ -109,5 +138,38 @@ const handleOpenEditProfileModal = () => {
         location: profileData.value.location,
         name: profileData.value.user.name,
     });
+};
+
+const handleMouseEnter = () => {
+    followingButtonText.value = "Unfollow";
+};
+const handleMouseLeave = () => {
+    followingButtonText.value = "Following";
+};
+
+const handleFollow = async () => {
+    try {
+        loading.value = true;
+        profileData.value.isAuthUserFollowThisProfile = true;
+        profileData.value.followersCount++;
+        await followProfile(username);
+    } catch (error) {
+        console.log(error);
+    } finally {
+        loading.value = false;
+    }
+};
+
+const handleUnfollow = async () => {
+    try {
+        loading.value = true;
+        profileData.value.isAuthUserFollowThisProfile = false;
+        profileData.value.followersCount--;
+        await unfollowProfile(username);
+    } catch (error) {
+        console.log(error);
+    } finally {
+        loading.value = false;
+    }
 };
 </script>
