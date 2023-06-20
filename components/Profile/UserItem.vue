@@ -17,7 +17,7 @@
                             {{ props.profile.user.name }}
                         </div>
                         <div class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ props.profile.user.username }}
+                            {{ props.profile.user.usernameWithAt }}
                         </div>
                         <div class="" v-if="props.profile.bio">
                             <span class="dark:text-white">
@@ -67,9 +67,8 @@ const { unfollowProfile, followProfile } = useProfile();
 
 const followingButtonText = ref("Following");
 const loading = ref(false);
-const username = props.profile.user.username.replace("@", "");
 const profileLink = computed(() => {
-    return `/profile/${username}`;
+    return `/profile/${props.profile.user.username}`;
 });
 
 const handleMouseEnter = () => {

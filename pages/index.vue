@@ -41,4 +41,8 @@ emitter.$on("newTweet", (tweet) => {
 const handleFormSuccess = (tweet) => {
     emitter.$emit("newTweet", tweet);
 };
+
+emitter.$on("deleteTweet", (tweetId) => {
+    tweets.value = tweets.value.filter((t) => t.id !== tweetId);
+});
 </script>

@@ -62,6 +62,45 @@ export default () => {
         });
     };
 
+    const deleteTweet = async (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await useFetchApi(`/api/tweets/${id}`, {
+                    method: "DELETE",
+                });
+                resolve(response);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+
+    const likeTweet = async (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await useFetchApi(`/api/tweets/${id}/like`, {
+                    method: "POST",
+                });
+                resolve(response);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+
+    const unlikeTweet = async (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await useFetchApi(`/api/tweets/${id}/unlike`, {
+                    method: "POST",
+                });
+                resolve(response);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+
     return {
         getTweets,
         getSingleTweet,
@@ -73,5 +112,8 @@ export default () => {
         openDisplayModal,
         useDisplayModal,
         getUserTweets,
+        likeTweet,
+        unlikeTweet,
+        deleteTweet,
     };
 };

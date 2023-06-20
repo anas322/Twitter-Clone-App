@@ -29,7 +29,11 @@
             <SidebarRightPreviewCardItem v-for="(WhoToFollow, index) in whoTsFollowItems" :key="index">
                 <div class="flex flex-row justify-between">
                     <div class="flex flex-row items gap-3">
-                        <img class="w-10 h-10 rounded-full" :src="WhoToFollow.avatar" :alt="WhoToFollow.name" />
+                        <img
+                            class="w-10 h-10 rounded-full object-cover"
+                            :src="WhoToFollow.avatar"
+                            :alt="WhoToFollow.name"
+                        />
                         <div>
                             <h2 class="font-bold dark:text-white hover:underline">{{ WhoToFollow.name }}</h2>
                             <span class="text-sm text-gray-500">{{ WhoToFollow.username }}</span>

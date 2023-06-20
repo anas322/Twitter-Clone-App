@@ -6,7 +6,7 @@
         </div>
 
         <div v-else>
-            <ProfileFollowHeader :title="profileData.user?.name" :miniTitle="profileData.user?.username" />
+            <ProfileFollowHeader :title="profileData.user?.name" :miniTitle="profileData.user?.usernameWithAt" />
             <ProfileUserItem
                 v-for="(user, index) in followingUsers"
                 :key="`list-user${index}`"
@@ -44,9 +44,6 @@ const getProfileFollowing = async () => {
         const { following } = await ProfileFollowing(username);
         followingUsers.value = following;
     } catch (error) {
-        if (error.status == 404) {
-            navigateTo("/profile/username/notfound");
-        }
         console.log(error);
     }
 };

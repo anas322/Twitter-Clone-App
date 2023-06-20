@@ -2,14 +2,19 @@
     <div class="mt-2">
         <div v-if="props.parent" :class="props.parent ? '-ml-12' : ''">
             <div class="border-b border-gray-200 dark:border-white/20 py-3 text-gray-500 text-sm">
-                <span>11:23 AM · Jun 13, 2023 · <span class="font-semibold dark:text-white">59.9K</span> Views</span>
+                <span
+                    >{{ props.tweet.createed_at_full }} ·
+                    <span class="font-semibold dark:text-white">59.9K</span> Views</span
+                >
             </div>
 
             <div class="border-b border-gray-200 dark:border-white/20 py-3 text-gray-500 text-sm">
                 <span class="space-x-3">
                     <span><span class="font-semibold dark:text-white">120</span> Retweets </span>
                     <span><span class="font-semibold dark:text-white">540</span> Quotes </span>
-                    <span><span class="font-semibold dark:text-white">1,405</span> Likes </span>
+                    <span
+                        ><span class="font-semibold dark:text-white">{{ likesCount }}</span> Likes
+                    </span>
                     <span><span class="font-semibold dark:text-white">59</span> Bookmarks </span>
                 </span>
             </div>
@@ -32,10 +37,17 @@
                 <template #default v-if="!props.parent"> 5 </template>
             </TweetItemActionsIcon>
 
-            <div class="flex items-center space-x-1">
-                <UITwitterIcon />
-
-                <span class="text-sm text-gray-500" v-if="!props.parent">5</span>
+            <div class="group flex items-center space-x-1">
+                <div @click.stop.prevent="handleTweetReact">
+                    <UITwitterIcon :isLikedByAuthUser="props.tweet.isLikedByAuthUser" :parent="props.parent" />
+                </div>
+                <span
+                    class="text-sm group-hover:text-[#f91880]"
+                    :class="[props.tweet.isLikedByAuthUser ? 'text-[#f91880]' : 'text-gray-500']"
+                    v-if="!props.parent"
+                >
+                    {{ likesCount == 0 ? "" : likesCount }}
+                </span>
             </div>
 
             <TweetItemActionsIcon color="dim" :parent="props.parent">
@@ -76,8 +88,22 @@ const props = defineProps({
         default: false,
     },
 });
+const { likeTweet, unlikeTweet } = useTweets();
 
 const repliesCount = computed(() => {
     return props.tweet.replies_count > 0 ? props.tweet.replies_count : "";
 });
+
+const likesCount = ref(props.tweet.likes_count > 0 ? props.tweet.likes_count : "");
+const handleTweetReact = () => {
+    if (props.tweet.isLikedByAuthUser) {
+        likesCount.value--;
+        props.tweet.isLikedByAuthUser = false;
+        unlikeTweet(props.tweet.id);
+    } else {
+        likesCount.value++;
+        props.tweet.isLikedByAuthUser = true;
+        likeTweet(props.tweet.id);
+    }
+};
 </script>

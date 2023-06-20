@@ -59,12 +59,14 @@
                 <!-- name and username  -->
                 <div class="flex flex-col justify-start">
                     <span class="text-lg font-bold dark:text-white">{{ profileData.user?.name }}</span>
-                    <span class="text-gray-500 text-sm">{{ profileData.user?.username }}</span>
+                    <span class="text-gray-500 text-sm">{{ profileData.user?.usernameWithAt }}</span>
                 </div>
 
                 <!-- bio -->
                 <div>
-                    <span class="dark:text-white text-sm"> {{ profileData.bio }} </span>
+                    <span class="dark:text-white text-sm">
+                        {{ profileData.bio != "null" ? profileData.bio : "" }}
+                    </span>
                 </div>
 
                 <div class="flex gap-x-3">

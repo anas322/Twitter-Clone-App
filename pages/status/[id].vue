@@ -4,11 +4,14 @@
             <UISpinner />
         </div>
         <div v-else class="relative">
-            <span class="absolute left-8 top-12 bottom-44 block mt-1 mx-auto w-[2px] bg-white/20"></span>
+            <span
+                v-if="tweet.length > 1"
+                class="absolute left-8 top-12 bottom-44 block mt-1 mx-auto w-[2px] bg-white/20"
+            ></span>
             <TweetListFeed :tweets="tweet" parent />
         </div>
 
-        <TweetForm :reply_to="tweet[0].id" @on-success="handleFormSuccess" />
+        <TweetForm :reply_to="tweet[tweet.length - 1].id" @on-success="handleFormSuccess" />
 
         <TweetListFeed v-if="replies.length" :tweets="replies" replies />
     </MainSection>
@@ -24,7 +27,6 @@ const replies = ref([]);
 const id = computed(() => {
     return useRoute().params.id;
 });
-
 try {
     tweetsLoading.value = true;
 

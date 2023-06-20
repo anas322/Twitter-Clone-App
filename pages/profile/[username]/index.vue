@@ -44,7 +44,7 @@ const getUserTweetsFun = async () => {
         tweetsCount.value = data.tweetsCount;
     } catch (error) {
         if (error.status == 404) {
-            navigateTo("/profile/username/notfound");
+            navigateTo("/profile/username/notfound", { replace: true });
         }
         console.log(error);
     } finally {

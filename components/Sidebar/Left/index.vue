@@ -106,10 +106,12 @@
             >
                 <div class="w-10">
                     <img
-                        class="w-10 h-10 rounded-full"
-                        src="https://pbs.twimg.com/profile_images/1624685067577573378/ryXZhuCt_normal.jpg"
-                        alt=""
+                        v-if="user.profile.avatar"
+                        class="w-10 h-10 rounded-full object-cover"
+                        :src="user.profile.avatar"
+                        :alt="user.name"
                     />
+                    <UIDefaultAvatar v-else class="w-10 h-10 rounded-full overflow-hidden bg-gray-600" />
                 </div>
                 <div class="hidden large:flex flex-col pr-24">
                     <h1 class="text-sm dark:text-white font-semibold hover:underline cursor-pointer">Anas</h1>

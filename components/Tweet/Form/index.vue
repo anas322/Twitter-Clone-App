@@ -2,11 +2,15 @@
     <div :class="[props.modal === false ? 'border-b' : '', themeMode === true ? 'border-white/20' : 'border-gray-200']">
         <div class="flex items-start space-x-3 pt-4 px-3">
             <div class="flex-shrink-0">
-                <img
-                    class="w-10 h-10 rounded-full"
-                    src="https://pbs.twimg.com/profile_images/1624685067577573378/ryXZhuCt_normal.jpg"
-                    alt=""
-                />
+                <NuxtLink :to="`/profile/${user.username}`" class="cursor-pointer">
+                    <img
+                        v-if="user.profile.avatar"
+                        class="w-10 h-10 rounded-full object-cover"
+                        :src="user.profile.avatar"
+                        :alt="user.name"
+                    />
+                    <UIDefaultAvatar v-else class="w-10 h-10 rounded-full overflow-hidden bg-gray-600" />
+                </NuxtLink>
             </div>
             <div class="flex-1">
                 <div class="flex flex-col">
@@ -150,9 +154,9 @@
 
 <script setup>
 import { XMarkIcon } from "@heroicons/vue/24/outline";
-
 const emits = defineEmits(["onSuccess"]);
 
+const { user } = useAuth();
 const props = defineProps({
     reply_to: {
         type: Number,
@@ -163,7 +167,6 @@ const props = defineProps({
         default: false,
     },
 });
-
 const { useThemeMode } = useTheme();
 const themeMode = useThemeMode().value;
 

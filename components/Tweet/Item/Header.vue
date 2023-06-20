@@ -5,9 +5,13 @@
                 class="text-sm font-semibold hover:underline cursor-pointer"
                 :class="themeMode === true ? 'text-white' : ''"
             >
-                {{ props.user.name }}
+                <NuxtLink :to="profileLink">
+                    {{ props.user.name }}
+                </NuxtLink>
             </h1>
-            <span class="text-sm text-gray-500">{{ props.user.username }} </span>
+            <NuxtLink :to="`/profile/${username}`" class="flex items-start">
+                <span class="text-sm text-gray-500">{{ props.user.usernameWithAt }} </span>
+            </NuxtLink>
             <span class="text-sm text-gray-500">.</span>
             <span class="text-sm text-gray-500">{{ props.created_at }}</span>
         </div>
@@ -15,7 +19,11 @@
         <div v-if="props.reply_to && !props.modal">
             <span class="block text-sm text-gray-500"
                 >Replying to
-                <span class="text-dim-600 hover:underline cursor-pointer">{{ props.reply_to?.user?.username }}</span>
+                <NuxtLink :to="replyToProfileLink">
+                    <span class="text-dim-600 hover:underline cursor-pointer">{{
+                        props.reply_to?.user?.usernameWithAt
+                    }}</span>
+                </NuxtLink>
             </span>
         </div>
     </div>
@@ -24,7 +32,7 @@
 <script setup>
 const { useThemeMode } = useTheme();
 const themeMode = useThemeMode().value;
-
+const username = props.user.username;
 const props = defineProps({
     user: {
         type: Object,
@@ -42,5 +50,12 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+});
+
+const profileLink = computed(() => {
+    return `/profile/${username}`;
+});
+const replyToProfileLink = computed(() => {
+    return `/profile/${props.reply_to?.user?.username}`;
 });
 </script>
