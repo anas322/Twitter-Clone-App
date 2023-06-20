@@ -121,8 +121,12 @@
                             <img
                                 :src="`http://localhost:8000/storage/tweets/${props.tweet.media[0]?.url}`"
                                 alt=""
-                                class="max-h-[510px] w-auto object-cover rounded-2xl"
-                                :class="[themeMode === true ? 'border border-gray-700' : 'border border-gray-400']"
+                                class="w-auto object-cover rounded-2xl"
+                                :class="[
+                                    themeMode === true ? 'border border-gray-700' : 'border border-gray-400',
+                                    { 'max-h-[810px]': props.parent },
+                                    { 'max-h-[510px]': !props.parent },
+                                ]"
                             />
                         </div>
                     </div>

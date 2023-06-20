@@ -19,6 +19,7 @@
 
 <script setup>
 definePageMeta({ middleware: ["auth"] });
+
 const { getSingleTweet } = useTweets();
 
 const tweetsLoading = ref(false);

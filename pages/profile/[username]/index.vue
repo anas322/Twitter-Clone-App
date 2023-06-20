@@ -1,6 +1,6 @@
 <template>
     <div>
-        <MainSection withoutHeader profile :tweetsCount="tweetsCount">
+        <MainSection withoutHeader profile :title="user.name" :tweetsCount="tweetsCount">
             <ProfileHeader />
             <ProfileTabs />
 
