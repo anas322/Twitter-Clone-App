@@ -23,7 +23,7 @@
                             type="file"
                             name="selectedImage[]"
                             ref="inputImage"
-                            accept="image/jpg, image/jpeg, image/png, image/gif, video/mp4, video/webm, video/mp3, video/wav"
+                            accept="image/jpg, image/jpeg, image/png, image/gif, video/mp4, video/webm"
                             hidden
                         />
 

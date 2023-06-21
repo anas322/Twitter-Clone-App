@@ -11,7 +11,7 @@
         viewBox="0 0 429.453 429.453"
         style="enable-background: new 0 0 512 512"
         xml:space="preserve"
-        class="hovered-paths"
+        class="hovered-paths grayscale"
     >
         <g>
             <path

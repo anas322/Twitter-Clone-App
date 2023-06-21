@@ -124,17 +124,25 @@
                             {{ props.tweet.content }}
                         </p>
 
-                        <div class="mt-2" :class="[props.parent ? '-ml-12' : '']" v-if="props.tweet.media?.length">
-                            <img
-                                :src="`http://localhost:8000/storage/tweets/${props.tweet.media[0]?.url}`"
-                                alt=""
-                                class="w-auto object-cover rounded-2xl"
-                                :class="[
-                                    themeMode === true ? 'border border-gray-700' : 'border border-gray-400',
-                                    { 'max-h-[810px]': props.parent },
-                                    { 'max-h-[510px]': !props.parent },
-                                ]"
-                            />
+                        <div class="mt-2" :class="[props.parent ? '-ml-12' : '']" v-if="props.tweet.media?.length > 0">
+                            <div v-if="props.tweet.media[0]?.type == 'image'">
+                                <div v-for="(media, index) in props.tweet.media" :key="`media-key${index}`">
+                                    <img
+                                        :src="media.url"
+                                        :alt="props.tweet.content"
+                                        class="w-auto object-cover rounded-2xl"
+                                        :class="[
+                                            themeMode === true ? 'border border-gray-700' : 'border border-gray-400',
+                                            { 'max-h-[810px]': props.parent },
+                                            { 'max-h-[510px]': !props.parent },
+                                        ]"
+                                    />
+                                </div>
+                            </div>
+                            <video v-else width="340" height="240" controls>
+                                <source :src="props.tweet.media[0]?.url" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                     </div>
 
