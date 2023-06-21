@@ -7,10 +7,21 @@
                 <NuxtPage />
             </div>
 
+            <!-- post tweet modal  -->
             <UIDialog :isOpen="postTweetModal" @on-close="handleModalClose">
                 <TweetItem v-if="replyTweet" :tweet="replyTweet" modal />
                 <div class="pt-3"></div>
                 <TweetForm @on-success="handleFormSucess" :reply_to="replyTweet?.id" modal />
+            </UIDialog>
+
+            <!-- retweet modal  -->
+            <UIDialog :isOpen="postRetweetModal" @on-close="handleRetweetModalClose">
+                <TweetForm
+                    @on-success="handleFormRetweetSucess"
+                    :retweet_of="retweetTweet?.id"
+                    :tweet="retweetTweet"
+                    modal
+                />
             </UIDialog>
 
             <UIDialog :isOpen="editProfiletModal" @on-close="handleProfileModalClose">
@@ -82,10 +93,14 @@ const {
     closeDisplayModal,
     useDisplayModal,
     closePostTweetModal,
+    closePostRetweetModal,
+    usePostRetweetModal,
+    openPostRetweetModal,
     openPostTweetModal,
     usePostTweetModal,
     useReplyTweet,
     openDisplayModal,
+    useRetweetTweet,
 } = useTweets();
 const { useThemeMode, turnOnLightMode, turnOnDarkMode } = useTheme();
 const darkMode = useThemeMode();
@@ -94,8 +109,10 @@ const { useAuthLoading } = useAuth();
 const emitter = useEmitter();
 
 const postTweetModal = usePostTweetModal();
+const postRetweetModal = usePostRetweetModal();
 const displayModal = useDisplayModal();
 const replyTweet = useReplyTweet();
+const retweetTweet = useRetweetTweet();
 const editProfiletModal = useEditProfileModal();
 const profile = useProfileData();
 
@@ -110,6 +127,10 @@ emitter.$on("display", () => {
     openDisplayModal();
 });
 
+emitter.$on("retweetModal", (tweet) => {
+    openPostRetweetModal(tweet);
+});
+
 emitter.$on("editProfile", (profile) => {
     openEditProfileModal(profile);
 });
@@ -119,6 +140,11 @@ const handleFormSucess = (tweet) => {
     closePostTweetModal();
 };
 
+const handleFormRetweetSucess = (tweet) => {
+    emitter.$emit("newTweet", tweet);
+    closePostRetweetModal();
+};
+
 const handleProfileFormSucess = () => {
     useRouter().go();
     closeEditProfileModal();
@@ -126,6 +152,10 @@ const handleProfileFormSucess = () => {
 
 const handleModalClose = () => {
     closePostTweetModal();
+};
+
+const handleRetweetModalClose = () => {
+    closePostRetweetModal();
 };
 const handleDisplayClose = () => {
     closeDisplayModal();

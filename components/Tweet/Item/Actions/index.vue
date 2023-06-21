@@ -8,11 +8,22 @@
                 >
             </div>
 
-            <div class="border-b border-gray-200 dark:border-white/20 py-3 text-gray-500 text-sm">
+            <div
+                class="border-b border-gray-200 dark:border-white/20 py-3 text-gray-500 text-sm"
+                v-if="isThereAnyReacts"
+            >
                 <span class="space-x-3">
-                    <span><span class="font-semibold dark:text-white">120</span> Retweets </span>
-                    <span><span class="font-semibold dark:text-white">540</span> Quotes </span>
-                    <span
+                    <span v-if="props.tweet.retweets_without_quotes_count > 0"
+                        ><span class="font-semibold dark:text-white">{{
+                            props.tweet.retweets_without_quotes_count
+                        }}</span>
+                        Retweets
+                    </span>
+                    <span v-if="props.tweet.retweets_with_quotes_count > 0"
+                        ><span class="font-semibold dark:text-white">{{ props.tweet.retweets_with_quotes_count }}</span>
+                        Quotes
+                    </span>
+                    <span v-if="props.tweet.likes_count > 0"
                         ><span class="font-semibold dark:text-white">{{ likesCount }}</span> Likes
                     </span>
                     <span><span class="font-semibold dark:text-white">59</span> Bookmarks </span>
@@ -30,11 +41,50 @@
                 <template #default v-if="!props.parent"> {{ repliesCount }} </template>
             </TweetItemActionsIcon>
 
-            <TweetItemActionsIcon color="green" :parent="props.parent">
+            <TweetItemActionsIcon
+                color="green"
+                :parent="props.parent"
+                :isRetweetedByAuthUser="props.tweet.isRetweetedByAuthUser"
+                @click.stop.prevent="toggleList"
+            >
                 <template #icon="{ classes }">
+                    <!-- retweet list -->
+                    <div class="relative" v-if="showList">
+                        <Teleport to="body">
+                            <div class="z-10 fixed inset-0 bg-transparent" @click="toggleList"></div>
+                        </Teleport>
+                        <div class="z-20 absolute right-0 top-0 min-w-max">
+                            <div
+                                class="space-y-2 rounded-lg bg-white dark:bg-dim-900 shadow-lg shadow-gray-500 dark:shadow-white/20 overflow-hidden"
+                            >
+                                <div
+                                    class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/5 transition-all"
+                                    @click.stop.prevent="handleRetweet"
+                                >
+                                    <div>
+                                        <ArrowPathRoundedSquareIcon class="h-5 w-5 dark:text-white" />
+                                    </div>
+                                    <span class="dark:text-white text-sm font-semibold">Retweet</span>
+                                </div>
+
+                                <div
+                                    class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/5 transition-all"
+                                    @click.stop.prevent="handleRetweetModal"
+                                >
+                                    <div>
+                                        <PencilSquareIcon class="h-5 w-5 dark:text-white" />
+                                    </div>
+                                    <span class="dark:text-white text-sm font-semibold">Quote Tweet</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <ArrowPathRoundedSquareIcon :class="classes" />
                 </template>
-                <template #default v-if="!props.parent"> 5 </template>
+                <template #default v-if="!props.parent">
+                    {{ props.tweet.retweets_count == 0 ? "" : props.tweet.retweets_count }}
+                </template>
             </TweetItemActionsIcon>
 
             <div class="group flex items-center space-x-1">
@@ -50,7 +100,7 @@
                 </span>
             </div>
 
-            <TweetItemActionsIcon color="dim" :parent="props.parent">
+            <TweetItemActionsIcon color="dim" :parent="props.parent" v-if="!props.parent">
                 <template #icon="{ classes }">
                     <svg :class="classes" viewBox="0 0 24 24" aria-hidden="true" fill="CurrentColor">
                         <g>
@@ -60,24 +110,85 @@
                         </g>
                     </svg>
                 </template>
-                <template #default v-if="!props.parent"> 5 </template>
+                <template #default v-if="!props.parent"> {{ Math.floor(Math.random() * 1000 + 1) }} </template>
             </TweetItemActionsIcon>
 
-            <TweetItemActionsIcon color="dim" :parent="props.parent">
+            <TweetItemActionsIcon color="dim" :parent="props.parent" v-if="props.parent">
                 <template #icon="{ classes }">
+                    <BookmarkIcon :class="classes" />
+                </template>
+
+                <template #default v-if="!props.parent"> {{ Math.floor(Math.random() * 100 + 1) }} </template>
+            </TweetItemActionsIcon>
+
+            <TweetItemActionsIcon color="dim" :parent="props.parent" @click.stop.prevent="toggleShareList">
+                <template #icon="{ classes }">
+                    <div class="relative" v-if="shareList">
+                        <Teleport to="body">
+                            <div class="z-10 fixed inset-0 bg-transparent" @click="toggleShareList"></div>
+                        </Teleport>
+                        <div class="z-20 absolute right-0 top-0 min-w-max">
+                            <div
+                                class="space-y-2 rounded-lg bg-white dark:bg-dim-900 shadow-lg shadow-gray-500 dark:shadow-white/20 overflow-hidden"
+                            >
+                                <div
+                                    class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/5 transition-all"
+                                >
+                                    <div>
+                                        <LinkIcon class="h-5 w-5 dark:text-white" />
+                                    </div>
+                                    <span class="dark:text-white text-sm font-semibold">Copy link to Tweet</span>
+                                </div>
+
+                                <div
+                                    class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/5 transition-all"
+                                >
+                                    <div>
+                                        <ArrowUpTrayIcon class="h-5 w-5 dark:text-white" />
+                                    </div>
+                                    <span class="dark:text-white text-sm font-semibold">Share Tweet via …</span>
+                                </div>
+
+                                <div
+                                    class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/5 transition-all"
+                                >
+                                    <div>
+                                        <EnvelopeIcon class="h-5 w-5 dark:text-white" />
+                                    </div>
+                                    <span class="dark:text-white text-sm font-semibold">Send via Direct Message</span>
+                                </div>
+
+                                <div
+                                    class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/5 transition-all"
+                                >
+                                    <div>
+                                        <BookmarkIcon class="h-5 w-5 dark:text-white" />
+                                    </div>
+                                    <span class="dark:text-white text-sm font-semibold">Bookmark</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <ArrowUpTrayIcon :class="classes" />
                 </template>
-                <template #default v-if="!props.parent"> 5 </template>
             </TweetItemActionsIcon>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ChatBubbleOvalLeftIcon, ArrowUpTrayIcon } from "@heroicons/vue/24/outline";
+import {
+    BookmarkIcon,
+    EnvelopeIcon,
+    LinkIcon,
+    PencilSquareIcon,
+    ChatBubbleOvalLeftIcon,
+    ArrowUpTrayIcon,
+} from "@heroicons/vue/24/outline";
+
 import { ArrowPathRoundedSquareIcon } from "@heroicons/vue/20/solid";
 
-const emits = defineEmits(["onCommitClick"]);
+const emits = defineEmits(["onCommitClick", "onRetweetClick", "onRetweetClickModal"]);
 const props = defineProps({
     tweet: {
         type: Object,
@@ -89,12 +200,28 @@ const props = defineProps({
     },
 });
 const { likeTweet, unlikeTweet } = useTweets();
-
+const showList = ref(false);
+const shareList = ref(false);
+const likesCount = ref(props.tweet.likes_count > 0 ? props.tweet.likes_count : "");
 const repliesCount = computed(() => {
     return props.tweet.replies_count > 0 ? props.tweet.replies_count : "";
 });
 
-const likesCount = ref(props.tweet.likes_count > 0 ? props.tweet.likes_count : "");
+const toggleList = () => {
+    showList.value = !showList.value;
+};
+
+const toggleShareList = () => {
+    shareList.value = !shareList.value;
+};
+const isThereAnyReacts = computed(() => {
+    return (
+        props.tweet.likes_count > 0 ||
+        props.tweet.retweets_without_quotes_count > 0 ||
+        props.tweet.retweets_with_quotes_count > 0 ||
+        props.tweet.retweets_with_quotes_count > 0
+    );
+});
 const handleTweetReact = () => {
     if (props.tweet.isLikedByAuthUser) {
         likesCount.value--;
@@ -105,5 +232,14 @@ const handleTweetReact = () => {
         props.tweet.isLikedByAuthUser = true;
         likeTweet(props.tweet.id);
     }
+};
+const handleRetweet = () => {
+    showList.value = false;
+    emits("onRetweetClick");
+};
+
+const handleRetweetModal = () => {
+    showList.value = false;
+    emits("onRetweetClickModal");
 };
 </script>

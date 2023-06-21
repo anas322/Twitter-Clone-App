@@ -17,7 +17,13 @@
                     <div v-if="loading" class="flex justify-center items-center h-24">
                         <UISpinner />
                     </div>
-                    <div v-else class="border-b" :class="themeMode === true ? 'border-white/20' : 'border-gray-200'">
+                    <div
+                        v-else
+                        :class="[
+                            !props.tweet ? 'border-b' : '',
+                            themeMode === true ? ' border-white/20' : ' border-gray-200',
+                        ]"
+                    >
                         <input
                             @change="handleImageChange"
                             type="file"
@@ -31,7 +37,7 @@
                             v-model="tweetContent"
                             class="w-full px-4 py-2 text-lg rounded-lg focus:ring-0 border-0 bg-transparent focus:border-transparent resize-none"
                             :class="themeMode === true ? 'text-white' : 'text-black'"
-                            rows="3"
+                            :rows="props.tweet ? 1 : 3"
                             placeholder="What's happening?"
                         ></textarea>
                         <div v-if="mediaPreview" class="relative rounded-2xl overflow-hidden mb-4">
@@ -45,6 +51,81 @@
                                 <source :src="mediaPreview.url" :type="mediaPreview.typeVideo" />
                                 Your browser does not support the video tag.
                             </video>
+                        </div>
+                    </div>
+
+                    <!-- retweet && quote tweet -->
+                    <div v-if="props.tweet">
+                        <div
+                            class="relative flex flex-col items-start p-2 mt-2 rounded-lg border dark:"
+                            :class="themeMode === true ? 'bg-dim-900 border-white/20' : 'bg-white border-gray-200'"
+                        >
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center gap-x-2">
+                                    <img
+                                        v-if="props.tweet.user.profile.avatar"
+                                        class="w-4 h-4 rounded-full object-cover"
+                                        :src="props.tweet.user.profile.avatar"
+                                        :alt="props.tweet.user.name"
+                                    />
+                                    <UIDefaultAvatar v-else class="w-4 h-4 rounded-full overflow-hidden bg-gray-600" />
+                                    <TweetItemHeader
+                                        :user="props.tweet.user"
+                                        :created_at="props.tweet.created_at"
+                                        :reply_to="props.tweet.reply_to"
+                                        :modal="props.modal"
+                                        :parent="props.parent"
+                                        :retweet="true"
+                                    />
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="relative flex flex-col">
+                                    <!-- tweet body -->
+                                    <div>
+                                        <p
+                                            class="text-sm"
+                                            :class="[themeMode === true ? 'text-white' : 'text-gray-800']"
+                                        >
+                                            {{ props.tweet.content }}
+                                        </p>
+
+                                        <div
+                                            class="mt-2"
+                                            :class="[props.parent ? '-ml-12' : '']"
+                                            v-if="props.tweet.media?.length > 0"
+                                        >
+                                            <div v-if="props.tweet.media[0]?.type == 'image'">
+                                                <div
+                                                    v-for="(media, index) in props.tweet.media"
+                                                    :key="`media-key${index}`"
+                                                >
+                                                    <img
+                                                        :src="media.url"
+                                                        :alt="props.tweet.content"
+                                                        class="w-auto object-cover rounded-2xl"
+                                                        :class="[
+                                                            themeMode === true
+                                                                ? 'border border-gray-700'
+                                                                : 'border border-gray-400',
+                                                            { 'max-h-[810px]': props.parent },
+                                                            { 'max-h-[510px]': !props.parent },
+                                                        ]"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <video v-else width="340" height="240" controls>
+                                                <source :src="props.tweet.media[0]?.url" type="video/mp4" />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <span class="text-dim-500 text-sm">Show this thread</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -162,12 +243,22 @@ const props = defineProps({
         type: Number,
         default: null,
     },
+    retweet_of: {
+        type: Number,
+        default: null,
+    },
+    tweet: {
+        type: Object,
+        default: null,
+        required: false,
+    },
     modal: {
         type: Boolean,
         default: false,
     },
 });
 const { useThemeMode } = useTheme();
+const { createTweet } = useTweets();
 const themeMode = useThemeMode().value;
 
 const inputImage = ref();
@@ -214,6 +305,9 @@ const handleSubmit = async () => {
     if (props.reply_to) {
         formData.append("reply_to", props.reply_to);
     }
+    if (props.retweet_of) {
+        formData.append("retweet_of", props.retweet_of);
+    }
 
     if (selectedImage.value?.length > 0) {
         for (let i = 0; i < selectedImage.value.length; i++) {
@@ -222,10 +316,7 @@ const handleSubmit = async () => {
     }
 
     try {
-        const data = await useFetchApi("api/user/tweets", {
-            method: "POST",
-            body: formData,
-        });
+        const data = await createTweet(formData);
         emits("onSuccess", data.tweet);
         loading.value = false;
 

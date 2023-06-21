@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex items-start" :class="[!props.parent ? 'flex-row space-x-2' : 'flex-col']">
+        <div class="flex items-start" :class="[!props.parent || props.retweet ? 'flex-row space-x-1' : 'flex-col']">
             <h1
                 class="text-sm font-semibold hover:underline cursor-pointer"
                 :class="themeMode === true ? 'text-white' : ''"
@@ -54,8 +54,11 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    retweet: {
+        type: Boolean,
+        default: false,
+    },
 });
-
 const profileLink = computed(() => {
     return `/profile/${username}`;
 });

@@ -5,6 +5,15 @@
             themeMode === true ? 'border-white/20' : 'border-gray-200',
         ]"
     >
+        <!-- if retweeted -->
+        <div v-if="props.tweet.retweet_of != null && props.tweet.content == null" class="flex gap-x-1 pl-4">
+            <ArrowPathRoundedSquareIcon class="w-6 h-6 p-1 stroke-2 text-gray-500" />
+
+            <span>
+                <span class="text-gray-500 text-xs font-bold hover:underline cursor-pointer">{{ retweetOfText }}</span>
+            </span>
+        </div>
+
         <div
             class="relative flex items-start space-x-3 pt-2"
             :class="[themeClass(), props.modal ? '' : 'px-3', { 'bg-white dark:bg-dim-900': props.parent }]"
@@ -15,11 +24,11 @@
                 class="absolute left-8 top-12 bottom-0 block mt-1 mx-auto w-[2px] bg-white/20"
             ></span>
             <div class="flex-shrink-0">
-                <NuxtLink :to="`/profile/${username}`" v-if="props.tweet.user.profile.avatar">
+                <NuxtLink :to="`/profile/${username}`" v-if="tweet.user.profile.avatar">
                     <img
                         class="w-10 h-10 rounded-full object-cover"
-                        :src="props.tweet.user.profile.avatar"
-                        :alt="props.tweet.user.name"
+                        :src="tweet.user.profile.avatar"
+                        :alt="tweet.user.name"
                     />
                 </NuxtLink>
                 <UIDefaultAvatar v-else class="w-10 h-10 rounded-full overflow-hidden bg-gray-600" />
@@ -67,7 +76,7 @@
                                             <DocumentPlusIcon class="h-5 w-5 dark:text-white" />
                                         </div>
                                         <span class="dark:text-white text-sm font-semibold"
-                                            >Add/remove {{ props.tweet.user.usernameWithAt }} from Lists</span
+                                            >Add/remove {{ tweet.user.usernameWithAt }} from Lists</span
                                         >
                                     </div>
 
@@ -87,7 +96,7 @@
                                             <NoSymbolIcon class="h-4 w-4 stroke-2 dark:text-white" />
                                         </div>
                                         <span class="dark:text-white text-sm font-semibold"
-                                            >Block {{ props.tweet.user.usernameWithAt }}</span
+                                            >Block {{ tweet.user.usernameWithAt }}</span
                                         >
                                     </div>
 
@@ -105,9 +114,9 @@
                     </div>
 
                     <TweetItemHeader
-                        :user="props.tweet.user"
-                        :created_at="props.tweet.created_at"
-                        :reply_to="props.tweet.reply_to"
+                        :user="tweet.user"
+                        :created_at="tweet.created_at"
+                        :reply_to="tweet.reply_to"
                         :modal="props.modal"
                         :parent="props.parent"
                     />
@@ -121,15 +130,15 @@
                                 { 'pt-8 -ml-[50px]': props.parent },
                             ]"
                         >
-                            {{ props.tweet.content }}
+                            {{ tweet.content }}
                         </p>
 
-                        <div class="mt-2" :class="[props.parent ? '-ml-12' : '']" v-if="props.tweet.media?.length > 0">
-                            <div v-if="props.tweet.media[0]?.type == 'image'">
-                                <div v-for="(media, index) in props.tweet.media" :key="`media-key${index}`">
+                        <div class="mt-2" :class="[props.parent ? '-ml-12' : '']" v-if="tweet.media?.length > 0">
+                            <div v-if="tweet.media[0]?.type == 'image'">
+                                <div v-for="(media, index) in tweet.media" :key="`media-key${index}`">
                                     <img
                                         :src="media.url"
-                                        :alt="props.tweet.content"
+                                        :alt="tweet.content"
                                         class="w-auto object-cover rounded-2xl"
                                         :class="[
                                             themeMode === true ? 'border border-gray-700' : 'border border-gray-400',
@@ -140,26 +149,120 @@
                                 </div>
                             </div>
                             <video v-else width="340" height="240" controls>
-                                <source :src="props.tweet.media[0]?.url" type="video/mp4" />
+                                <source :src="tweet.media[0]?.url" type="video/mp4" />
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                     </div>
 
+                    <!-- retweeted tweet -->
+                    <div v-if="props.tweet.retweet_of != null && props.tweet.content != null">
+                        <NuxtLink :to="`/status/${props.tweet.retweet_of.id}`">
+                            <div
+                                class="relative flex flex-col items-start p-2 mt-2 rounded-lg border border-gray-200 dark:border-white/20"
+                                :class="[themeClass(), { 'bg-white dark:bg-dim-900 -ml-[50px]': props.parent }]"
+                            >
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center gap-x-2">
+                                        <img
+                                            v-if="props.tweet.retweet_of.user.profile.avatar"
+                                            class="w-4 h-4 rounded-full object-cover"
+                                            :src="props.tweet.retweet_of.user.profile.avatar"
+                                            :alt="props.tweet.retweet_of.user.name"
+                                        />
+                                        <UIDefaultAvatar
+                                            v-else
+                                            class="w-4 h-4 rounded-full overflow-hidden bg-gray-600"
+                                        />
+                                        <TweetItemHeader
+                                            :user="props.tweet.retweet_of.user"
+                                            :created_at="props.tweet.retweet_of.created_at"
+                                            :reply_to="props.tweet.retweet_of.reply_to"
+                                            :modal="props.modal"
+                                            :parent="props.parent"
+                                            :retweet="true"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="relative flex flex-col">
+                                        <!-- tweet body -->
+                                        <div>
+                                            <p
+                                                class="text-sm"
+                                                :class="[themeMode === true ? 'text-white' : 'text-gray-800']"
+                                            >
+                                                {{ props.tweet.retweet_of.content }}
+                                            </p>
+
+                                            <div
+                                                class="mt-2"
+                                                :class="[props.parent ? '-ml-12' : '']"
+                                                v-if="props.tweet.retweet_of.media?.length > 0"
+                                            >
+                                                <div v-if="props.tweet.retweet_of.media[0]?.type == 'image'">
+                                                    <div
+                                                        v-for="(media, index) in props.tweet.retweet_of.media"
+                                                        :key="`media-key${index}`"
+                                                    >
+                                                        <img
+                                                            :src="media.url"
+                                                            :alt="props.tweet.retweet_of.content"
+                                                            class="w-auto object-cover rounded-2xl"
+                                                            :class="[
+                                                                themeMode === true
+                                                                    ? 'border border-gray-700'
+                                                                    : 'border border-gray-400',
+                                                                { 'max-h-[810px]': props.parent },
+                                                                { 'max-h-[510px]': !props.parent },
+                                                            ]"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <video v-else width="340" height="240" controls>
+                                                    <source
+                                                        :src="props.tweet.retweet_of.media[0]?.url"
+                                                        type="video/mp4"
+                                                    />
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </div>
+
+                                        <div v-if="props.modal">
+                                            <span class="block text-sm text-gray-500 pt-4"
+                                                >Replying to
+                                                <span class="text-dim-600 hover:underline cursor-pointer">{{
+                                                    props.tweet.retweet_of.reply_to?.user?.usernameWithAt
+                                                }}</span>
+                                            </span>
+                                        </div>
+
+                                        <div>
+                                            <span class="text-dim-500 text-sm">Show this thread</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </NuxtLink>
+                    </div>
+
                     <div v-if="props.modal">
                         <span class="block text-sm text-gray-500 pt-4"
                             >Replying to
-                            <span class="text-dim-600 hover:underline cursor-pointer">{{
-                                props.tweet.reply_to?.user?.usernameWithAt
-                            }}</span>
+                            <span class="text-dim-600 hover:underline cursor-pointer">{{ replyingToText }}</span>
                         </span>
                     </div>
+
+                    <!-- end of retweeted tweet  -->
 
                     <TweetItemActions
                         v-if="!props.modal"
                         :tweet="tweet"
                         :parent="props.parent"
                         @on-commit-click="handleCommitClick"
+                        @on-retweet-click="handleRetweetClick"
+                        @on-retweet-click-modal="handleRetweetClickModal"
                     />
                 </div>
             </div>
@@ -168,22 +271,28 @@
 </template>
 
 <script setup>
-import { EllipsisHorizontalIcon } from "@heroicons/vue/24/outline";
-import { UserPlusIcon } from "@heroicons/vue/24/outline";
-import { TrashIcon } from "@heroicons/vue/24/outline";
-import { CodeBracketIcon } from "@heroicons/vue/24/outline";
-import { NoSymbolIcon } from "@heroicons/vue/24/outline";
-import { DocumentPlusIcon } from "@heroicons/vue/24/outline";
-import { FlagIcon } from "@heroicons/vue/24/outline";
+import {
+    EllipsisHorizontalIcon,
+    UserPlusIcon,
+    TrashIcon,
+    CodeBracketIcon,
+    NoSymbolIcon,
+    DocumentPlusIcon,
+    FlagIcon,
+} from "@heroicons/vue/24/outline";
+
+import { ArrowPathRoundedSquareIcon } from "@heroicons/vue/20/solid";
 
 const { user } = useAuth();
 const { useThemeMode } = useTheme();
 const { unfollowProfile, followProfile } = useProfile();
-const { deleteTweet } = useTweets();
+const { deleteTweet, createTweet } = useTweets();
 const emitter = useEmitter();
 const themeMode = useThemeMode().value;
 
-const username = props.tweet.user.username;
+const tweet = ref(props.tweet);
+const username = tweet.value.user.username;
+
 const showList = ref(false);
 
 const props = defineProps({
@@ -208,20 +317,62 @@ const props = defineProps({
         default: false,
     },
 });
+onBeforeMount(() => {
+    if (props.tweet.retweet_of != null && props.tweet.content == null) {
+        tweet.value = props.tweet.retweet_of;
+    } else {
+        tweet.value = props.tweet;
+    }
+});
 const isSamePath = () => {
-    return useRoute().path === `/status/${props.tweet.id}`;
+    return useRoute().path === `/status/${tweet.value.id}`;
 };
 
 const navigateToTweet = () => {
     if (isSamePath() || props.modal) return;
 
     navigateTo({
-        path: `/status/${props.tweet.id}`,
+        path: `/status/${tweet.value.id}`,
     });
 };
 
 const handleCommitClick = () => {
+    if (props.tweet.retweet_of != null && props.tweet.content == null) {
+        emitter.$emit("replyTo", props.tweet.retweet_of);
+        return;
+    }
     emitter.$emit("replyTo", props.tweet);
+};
+
+const handleRetweetClick = async () => {
+    const formData = new FormData();
+
+    if (props.tweet.retweet_of != null && props.tweet.content == null) {
+        formData.append("retweet_of", props.tweet.retweet_of.id);
+        try {
+            const data = await createTweet(formData);
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+        return;
+    }
+
+    formData.append("retweet_of", props.tweet.id);
+    try {
+        const data = await createTweet(formData);
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const handleRetweetClickModal = () => {
+    if (props.tweet.retweet_of != null && props.tweet.content == null) {
+        emitter.$emit("retweetModal", props.tweet.retweet_of);
+        return;
+    }
+    emitter.$emit("retweetModal", props.tweet);
 };
 
 const themeClass = () => {
@@ -231,15 +382,33 @@ const themeClass = () => {
 };
 
 const followText = computed(() => {
-    if (props.tweet.isUserFollowTweetAuthor) {
-        return `Unfollow ${props.tweet.user.usernameWithAt}`;
+    if (tweet.value.isUserFollowTweetAuthor) {
+        return `Unfollow ${tweet.value.user.usernameWithAt}`;
     } else {
-        return `Follow ${props.tweet.user.usernameWithAt}`;
+        return `Follow ${tweet.value.user.usernameWithAt}`;
+    }
+});
+const replyingToText = computed(() => {
+    if (props.tweet.retweet_of != null && props.tweet.content == null) {
+        return props.tweet.retweet_of.user.usernameWithAt;
+    }
+    return props.tweet.user.usernameWithAt;
+});
+
+const retweetOfText = computed(() => {
+    if (props.tweet.retweet_of == null) return;
+
+    if (props.tweet.user?.id == user.value.id) {
+        return "You Retweeted";
+    }
+
+    if (props.tweet.retweet_of) {
+        return `${props.tweet.user.name} Retweeted`;
     }
 });
 
 const isUserOwnsTweet = computed(() => {
-    return props.tweet.user.id === user.value.id;
+    return tweet.value.user.id === user.value.id;
 });
 
 const toggleList = () => {
@@ -248,11 +417,11 @@ const toggleList = () => {
 
 const toggleFollowTweetAuthor = async () => {
     try {
-        if (props.tweet.isUserFollowTweetAuthor) {
-            props.tweet.isUserFollowTweetAuthor = false;
+        if (tweet.value.isUserFollowTweetAuthor) {
+            tweet.value.isUserFollowTweetAuthor = false;
             await unfollowProfile(username);
         } else {
-            props.tweet.isUserFollowTweetAuthor = true;
+            tweet.value.isUserFollowTweetAuthor = true;
             await followProfile(username);
         }
     } catch (error) {
@@ -262,8 +431,8 @@ const toggleFollowTweetAuthor = async () => {
 
 const deleteTweetById = async () => {
     try {
-        await deleteTweet(props.tweet.id);
-        emitter.$emit("deleteTweet", props.tweet.id);
+        await deleteTweet(tweet.value.id);
+        emitter.$emit("deleteTweet", tweet.value.id);
     } catch (error) {
         console.log(error);
     }
