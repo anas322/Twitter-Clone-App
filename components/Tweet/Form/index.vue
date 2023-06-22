@@ -31,6 +31,7 @@
                             ref="inputImage"
                             accept="image/jpg, image/jpeg, image/png, image/gif, video/mp4, video/webm"
                             hidden
+                            multiple
                         />
 
                         <textarea
@@ -40,17 +41,25 @@
                             :rows="props.tweet ? 1 : 3"
                             placeholder="What's happening?"
                         ></textarea>
-                        <div v-if="mediaPreview" class="relative rounded-2xl overflow-hidden mb-4">
-                            <XMarkIcon
-                                class="z-10 absolute top-3 left-3 h-6 w-6 p-1 text-white bg-dim-800 hover:bg-dim-700 cursor-pointer rounded-full"
-                                @click="handleRemoveMedia"
-                            />
-                            <img :src="mediaPreview.url" v-if="mediaPreview.type === 'image'" />
+                        <div class="grid grid-cols-2 gap-x-3">
+                            <div v-for="(media, index) in mediaPreview" :key="`media-${index}`">
+                                <div v-if="mediaPreview" class="relative rounded-2xl overflow-hidden mb-4">
+                                    <XMarkIcon
+                                        class="z-10 absolute top-3 left-3 h-6 w-6 p-1 text-white bg-dim-800 hover:bg-dim-700 cursor-pointer rounded-full"
+                                        @click="handleRemoveMedia(index)"
+                                    />
+                                    <img
+                                        :src="media.url"
+                                        v-if="media.type === 'image'"
+                                        class="object-cover col-span-1"
+                                    />
 
-                            <video width="340" height="240" v-else-if="mediaPreview.type === 'video'" controls>
-                                <source :src="mediaPreview.url" :type="mediaPreview.typeVideo" />
-                                Your browser does not support the video tag.
-                            </video>
+                                    <video width="340" height="240" v-else-if="media.type === 'video'" controls>
+                                        <source :src="media.url" :type="media.typeVideo" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -263,7 +272,8 @@ const themeMode = useThemeMode().value;
 
 const inputImage = ref();
 const selectedImage = ref([]);
-const mediaPreview = ref("");
+const imagesCount = ref(0);
+const mediaPreview = ref([]);
 
 const tweetContent = ref("");
 
@@ -271,26 +281,54 @@ const loading = ref(false);
 
 const handleImageChange = (event) => {
     loading.value = true;
-    selectedImage.value[0] = event.target.files[0];
-    const file = event.target.files[0];
+    for (let i = 0; i < event.target.files.length; i++) {
+        const file = event.target.files[i];
 
-    // Check if the file is an image
-    if (file.type.startsWith("image/")) {
-        mediaPreview.value = { type: "image", url: URL.createObjectURL(file) };
-    }
-    // Check if the file is a video
-    else if (file.type.startsWith("video/")) {
-        mediaPreview.value = { type: "video", typeVideo: file.type, url: URL.createObjectURL(file) };
-    } else {
-        console.log("File is neither an image nor a video");
+        // Check if the file is an image
+        if (file.type.startsWith("image/")) {
+            if (imagesCount.value >= 4) {
+                loading.value = false;
+                return;
+            }
+
+            if (selectedImage.value.length == 1 && selectedImage.value[0].type.startsWith("video/")) {
+                loading.value = false;
+                return;
+            }
+
+            mediaPreview.value.push({ type: "image", url: URL.createObjectURL(file) });
+            imagesCount.value++;
+        }
+        // Check if the file is a video
+        else if (file.type.startsWith("video/")) {
+            if (imagesCount.value > 0) {
+                loading.value = false;
+                return;
+            }
+            mediaPreview.value.push({ type: "video", typeVideo: file.type, url: URL.createObjectURL(file) });
+        } else {
+            console.log("File is neither an image nor a video");
+            return;
+        }
+        selectedImage.value.push(event.target.files[i]);
     }
     loading.value = false;
 };
 
-const handleRemoveMedia = () => {
-    selectedImage.value = [];
-    mediaPreview.value = "";
-    inputImage.value ? (inputImage.value.value = "") : null;
+const handleRemoveMedia = (index) => {
+    if (index === undefined) {
+        selectedImage.value = [];
+        mediaPreview.value = [];
+        imagesCount.value = 0;
+        inputImage.value ? (inputImage.value.value = "") : null;
+        return;
+    }
+    selectedImage.value.splice(index, 1);
+    mediaPreview.value.splice(index, 1);
+    imagesCount.value--;
+    if (selectedImage.value.length === 0) {
+        inputImage.value ? (inputImage.value.value = "") : null;
+    }
 };
 
 const handleImageClick = () => {

@@ -134,24 +134,37 @@
                         </p>
 
                         <div class="mt-2" :class="[props.parent ? '-ml-12' : '']" v-if="tweet.media?.length > 0">
-                            <div v-if="tweet.media[0]?.type == 'image'">
-                                <div v-for="(media, index) in tweet.media" :key="`media-key${index}`">
+                            <div
+                                class="grid gap-x-1 gap-y-1 rounded-2xl overflow-hidden"
+                                :class="[
+                                    { 'grid-cols-1 grid-rows-1': tweet.media.length == 1 },
+                                    { 'grid-cols-2 grid-rows-1': tweet.media.length == 2 },
+                                    { 'grid-cols-2 grid-rows-2': tweet.media.length > 2 },
+                                ]"
+                            >
+                                <div
+                                    v-for="(media, index) in tweet.media"
+                                    :key="`media-${index}`"
+                                    :class="[tweet.media.length > 2 && index == 1 ? 'row-span-2' : '']"
+                                >
                                     <img
+                                        v-if="media.type == 'image'"
                                         :src="media.url"
                                         :alt="tweet.content"
-                                        class="w-auto object-cover rounded-2xl"
+                                        class="w-auto object-cover"
                                         :class="[
                                             themeMode === true ? 'border border-gray-700' : 'border border-gray-400',
                                             { 'max-h-[810px]': props.parent },
                                             { 'max-h-[510px]': !props.parent },
+                                            tweet.media.length > 2 && index == 1 ? 'h-full' : '',
                                         ]"
                                     />
+                                    <video v-else width="340" height="240" controls>
+                                        <source :src="tweet.media[0]?.url" type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
                                 </div>
                             </div>
-                            <video v-else width="340" height="240" controls>
-                                <source :src="tweet.media[0]?.url" type="video/mp4" />
-                                Your browser does not support the video tag.
-                            </video>
                         </div>
                     </div>
 
