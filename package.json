@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@heroicons/vue": "^2.0.18",
-        "mitt": "^3.0.0"
+        "mitt": "^3.0.0",
+        "vue3-carousel": "^0.3.1"
     }
 }

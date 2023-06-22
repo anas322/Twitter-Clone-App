@@ -16,6 +16,7 @@ const props = defineProps({
     tweets: {
         type: Array,
         required: true,
+        default: [],
     },
     parent: {
         type: Boolean,

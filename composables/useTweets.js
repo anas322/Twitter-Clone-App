@@ -4,6 +4,8 @@ export default () => {
     const useReplyTweet = () => useState("reply_tweet", () => null);
     const useRetweetTweet = () => useState("retweet_tweet", () => null);
     const usePostRetweetModal = () => useState("post_retweet_modal", () => false);
+    const useMediaModal = () => useState("media_modal", () => false);
+    const useMediaTweet = () => useState("media_tweet", () => null);
 
     const closePostTweetModal = () => {
         const postTweetModal = usePostTweetModal();
@@ -46,6 +48,23 @@ export default () => {
         postRetweetModal.value = true;
 
         setRetweetTo(tweet);
+    };
+
+    const closeMediaModal = () => {
+        const mediaModal = useMediaModal();
+        mediaModal.value = false;
+    };
+
+    const setMediaTweet = (tweet) => {
+        const mediaTweet = useMediaTweet();
+        mediaTweet.value = tweet;
+    };
+
+    const openMediaModal = (tweet) => {
+        const mediaModal = useMediaModal();
+        mediaModal.value = true;
+
+        setMediaTweet(tweet);
     };
 
     const getTweets = async () => {
@@ -153,5 +172,9 @@ export default () => {
         closePostRetweetModal,
         openPostRetweetModal,
         useRetweetTweet,
+        closeMediaModal,
+        useMediaModal,
+        openMediaModal,
+        useMediaTweet,
     };
 };

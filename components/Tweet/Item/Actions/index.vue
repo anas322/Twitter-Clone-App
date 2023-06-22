@@ -235,6 +235,7 @@ const handleTweetReact = () => {
 };
 const handleRetweet = () => {
     showList.value = false;
+    props.tweet.retweets_count++;
     emits("onRetweetClick");
 };
 

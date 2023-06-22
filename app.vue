@@ -7,6 +7,16 @@
                 <NuxtPage />
             </div>
 
+            <div v-if="mediaModal" class="z-50 fixed inset-0 bg-black/60">
+                <UICarousel :mediaFiles="mediaTweet.media" @on-close="handleMediaModalClose">
+                    <div class="min-h-screen overflow-y-auto bg-dim-900 border-l border-gray-200 dark:border-white/20">
+                        <TweetItem :tweet="mediaTweet" carousel parent />
+                        <TweetForm @on-success="handleFormCarouselSucess" :reply_to="mediaTweet?.id" />
+
+                        <TweetListFeed :tweets="mediaTweet.replies" home />
+                    </div>
+                </UICarousel>
+            </div>
             <!-- post tweet modal  -->
             <UIDialog :isOpen="postTweetModal" @on-close="handleModalClose">
                 <TweetItem v-if="replyTweet" :tweet="replyTweet" modal />
@@ -96,6 +106,10 @@ const {
     closePostRetweetModal,
     usePostRetweetModal,
     openPostRetweetModal,
+    closeMediaModal,
+    useMediaModal,
+    useMediaTweet,
+    openMediaModal,
     openPostTweetModal,
     usePostTweetModal,
     useReplyTweet,
@@ -115,6 +129,8 @@ const replyTweet = useReplyTweet();
 const retweetTweet = useRetweetTweet();
 const editProfiletModal = useEditProfileModal();
 const profile = useProfileData();
+const mediaModal = useMediaModal();
+const mediaTweet = useMediaTweet();
 
 const pickedMode = ref(darkMode.value ? "dark" : "default");
 const isLoading = computed(() => useAuthLoading().value);
@@ -135,9 +151,21 @@ emitter.$on("editProfile", (profile) => {
     openEditProfileModal(profile);
 });
 
+emitter.$on("openMediaModal", (tweet) => {
+    openMediaModal(tweet);
+});
+
+emitter.$on("deleteTweet", () => {
+    closeMediaModal();
+});
+
 const handleFormSucess = (tweet) => {
     emitter.$emit("newTweet", tweet);
     closePostTweetModal();
+};
+
+const handleFormCarouselSucess = (tweet) => {
+    mediaTweet.value.replies.unshift(tweet);
 };
 
 const handleFormRetweetSucess = (tweet) => {
@@ -159,6 +187,10 @@ const handleRetweetModalClose = () => {
 };
 const handleDisplayClose = () => {
     closeDisplayModal();
+};
+
+const handleMediaModalClose = () => {
+    closeMediaModal();
 };
 
 const SwitchToLightMode = () => {
