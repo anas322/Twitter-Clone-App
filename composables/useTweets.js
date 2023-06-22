@@ -92,6 +92,19 @@ export default () => {
         });
     };
 
+    const unretweetTweet = async (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await useFetchApi(`/api/tweets/${id}/unretweet`, {
+                    method: "POST",
+                });
+                resolve(response);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+
     const getSingleTweet = async (id) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -156,6 +169,7 @@ export default () => {
     return {
         getTweets,
         createTweet,
+        unretweetTweet,
         getSingleTweet,
         closePostTweetModal,
         usePostTweetModal,

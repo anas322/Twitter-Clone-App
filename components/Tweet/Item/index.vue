@@ -304,7 +304,7 @@ import { ArrowPathRoundedSquareIcon } from "@heroicons/vue/20/solid";
 const { user } = useAuth();
 const { useThemeMode } = useTheme();
 const { unfollowProfile, followProfile } = useProfile();
-const { deleteTweet, createTweet } = useTweets();
+const { deleteTweet, createTweet, unretweetTweet } = useTweets();
 const emitter = useEmitter();
 const themeMode = useThemeMode().value;
 
@@ -366,13 +366,32 @@ const handleCommitClick = () => {
     emitter.$emit("replyTo", props.tweet);
 };
 
-const handleRetweetClick = async () => {
+const handleRetweetClick = async (isRetweetedByAuthUser) => {
+    if (isRetweetedByAuthUser) {
+        try {
+            if (props.tweet.retweet_of != null) {
+                const data = await unretweetTweet(props.tweet.retweet_of.id);
+                console.log(data);
+            } else {
+                const data = await unretweetTweet(props.tweet.id);
+                console.log(data);
+            }
+
+            if (props.tweet.retweet_of != null) {
+                emitter.$emit("deleteTweet", props.tweet.id);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        return;
+    }
     const formData = new FormData();
 
     if (props.tweet.retweet_of != null && props.tweet.content == null) {
         formData.append("retweet_of", props.tweet.retweet_of.id);
         try {
             const data = await createTweet(formData);
+            emitter.$emit("newTweet", data.tweet);
             console.log(data);
         } catch (error) {
             console.log(error);
@@ -383,6 +402,7 @@ const handleRetweetClick = async () => {
     formData.append("retweet_of", props.tweet.id);
     try {
         const data = await createTweet(formData);
+        emitter.$emit("newTweet", data.tweet);
         console.log(data);
     } catch (error) {
         console.log(error);
@@ -457,6 +477,7 @@ const toggleFollowTweetAuthor = async () => {
 
 const deleteTweetById = async () => {
     try {
+        console.log(tweet.value);
         await deleteTweet(tweet.value.id);
         emitter.$emit("deleteTweet", tweet.value.id);
     } catch (error) {

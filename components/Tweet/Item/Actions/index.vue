@@ -64,7 +64,7 @@
                                     <div>
                                         <ArrowPathRoundedSquareIcon class="h-5 w-5 dark:text-white" />
                                     </div>
-                                    <span class="dark:text-white text-sm font-semibold">Retweet</span>
+                                    <span class="dark:text-white text-sm font-semibold">{{ retweetText }}</span>
                                 </div>
 
                                 <div
@@ -207,6 +207,14 @@ const repliesCount = computed(() => {
     return props.tweet.replies_count > 0 ? props.tweet.replies_count : "";
 });
 
+const retweetText = computed(() => {
+    if (props.tweet.isRetweetedByAuthUser) {
+        return "Undo Retweet";
+    } else {
+        return "Retweet";
+    }
+});
+
 const toggleList = () => {
     showList.value = !showList.value;
 };
@@ -235,8 +243,13 @@ const handleTweetReact = () => {
 };
 const handleRetweet = () => {
     showList.value = false;
-    props.tweet.retweets_count++;
-    emits("onRetweetClick");
+
+    if (props.tweet.isRetweetedByAuthUser) {
+        props.tweet.retweets_count--;
+    } else {
+        props.tweet.retweets_count++;
+    }
+    emits("onRetweetClick", props.tweet.isRetweetedByAuthUser);
 };
 
 const handleRetweetModal = () => {
