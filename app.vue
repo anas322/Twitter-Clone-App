@@ -9,7 +9,7 @@
 
             <div v-if="mediaModal" class="z-50 fixed inset-0 bg-black/60">
                 <UICarousel :mediaFiles="mediaTweet.media" @on-close="handleMediaModalClose">
-                    <div class="min-h-screen overflow-y-auto bg-dim-900 border-l border-gray-200 dark:border-white/20">
+                    <div class="h-screen overflow-auto bg-dim-900 border-l border-gray-200 dark:border-white/20">
                         <TweetItem :tweet="mediaTweet" carousel parent />
                         <TweetForm @on-success="handleFormCarouselSucess" :reply_to="mediaTweet?.id" />
 

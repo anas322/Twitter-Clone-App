@@ -161,7 +161,7 @@
                                             { 'max-h-[510px]': !props.parent },
                                             tweet.media.length > 2 && index == 1 ? 'h-full' : '',
                                         ]"
-                                        @click.stop.prevent="openMediaModal"
+                                        @click.stop.prevent="openMediaModal()"
                                     />
                                     <video v-else width="340" height="240" controls>
                                         <source :src="tweet.media[0]?.url" type="video/mp4" />

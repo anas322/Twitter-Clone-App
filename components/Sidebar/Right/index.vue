@@ -31,11 +31,11 @@
                     <div class="flex flex-row items gap-3">
                         <img
                             class="w-10 h-10 rounded-full object-cover"
-                            :src="WhoToFollow.avatar"
+                            src="https://pbs.twimg.com/profile_images/1590968738358079488/IY9Gx6Ok_normal.jpg"
                             :alt="WhoToFollow.name"
                         />
                         <div>
-                            <h2 class="font-bold dark:text-white hover:underline">{{ WhoToFollow.name }}</h2>
+                            <h2 class="font-semibold dark:text-white hover:underline">{{ WhoToFollow.name }}</h2>
                             <span class="text-sm text-gray-500">{{ WhoToFollow.username }}</span>
                         </div>
                     </div>
