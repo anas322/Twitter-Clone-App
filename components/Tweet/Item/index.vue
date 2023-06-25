@@ -216,34 +216,60 @@
                                             <div
                                                 class="mt-2"
                                                 :class="[props.parent ? '-ml-12' : '']"
-                                                v-if="props.tweet.retweet_of.media?.length > 0"
+                                                v-if="props.tweet.retweet_of.media?.length > 0 && !props.carousel"
                                             >
-                                                <div v-if="props.tweet.retweet_of.media[0]?.type == 'image'">
+                                                <div
+                                                    class="grid gap-x-1 gap-y-1 rounded-2xl overflow-hidden"
+                                                    :class="[
+                                                        {
+                                                            'grid-cols-1 grid-rows-1':
+                                                                props.tweet.retweet_of.media.length == 1,
+                                                        },
+                                                        {
+                                                            'grid-cols-2 grid-rows-1':
+                                                                props.tweet.retweet_of.media.length == 2,
+                                                        },
+                                                        {
+                                                            'grid-cols-2 grid-rows-2':
+                                                                props.tweet.retweet_of.media.length > 2,
+                                                        },
+                                                    ]"
+                                                >
                                                     <div
                                                         v-for="(media, index) in props.tweet.retweet_of.media"
-                                                        :key="`media-key${index}`"
+                                                        :key="`media-${index}`"
+                                                        :class="[
+                                                            props.tweet.retweet_of.media.length > 2 && index == 1
+                                                                ? 'row-span-2'
+                                                                : '',
+                                                        ]"
                                                     >
                                                         <img
+                                                            v-if="media.type == 'image'"
                                                             :src="media.url"
-                                                            :alt="props.tweet.retweet_of.content"
-                                                            class="w-auto object-cover rounded-2xl"
+                                                            :alt="tweet.content"
+                                                            class="w-auto object-cover cursor-pointer"
                                                             :class="[
                                                                 themeMode === true
                                                                     ? 'border border-gray-700'
                                                                     : 'border border-gray-400',
                                                                 { 'max-h-[810px]': props.parent },
                                                                 { 'max-h-[510px]': !props.parent },
+                                                                props.tweet.retweet_of.media.length > 2 && index == 1
+                                                                    ? 'h-full'
+                                                                    : '',
                                                             ]"
+                                                            @click.stop.prevent="openMediaModal"
                                                         />
+                                                        <video v-else width="340" height="240" controls>
+                                                            <source
+                                                                :src="props.tweet.retweet_of.media[0]?.url"
+                                                                type="video/mp4"
+                                                            />
+                                                            Your browser does not support the video tag.
+                                                        </video>
                                                     </div>
                                                 </div>
-                                                <video v-else width="340" height="240" controls>
-                                                    <source
-                                                        :src="props.tweet.retweet_of.media[0]?.url"
-                                                        type="video/mp4"
-                                                    />
-                                                    Your browser does not support the video tag.
-                                                </video>
                                             </div>
                                         </div>
 
