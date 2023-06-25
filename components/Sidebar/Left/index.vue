@@ -26,14 +26,14 @@
                 <template #name> Explore </template>
             </SidebarLeftTab>
 
-            <SidebarLeftTab>
+            <SidebarLeftTab to="/notifications">
                 <template #icon>
                     <BellIcon class="w-7" />
                 </template>
                 <template #name> Notifications </template>
             </SidebarLeftTab>
 
-            <SidebarLeftTab>
+            <SidebarLeftTab to="/messages">
                 <template #icon>
                     <EnvelopeIcon class="w-7" />
                 </template>
