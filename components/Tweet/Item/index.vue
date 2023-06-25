@@ -139,7 +139,7 @@
                             v-if="tweet.media?.length > 0 && !props.carousel"
                         >
                             <div
-                                class="grid gap-x-1 gap-y-1 rounded-2xl overflow-hidden"
+                                class="grid gap-x-[2px] gap-y-[2px] rounded-2xl overflow-hidden border border-gray-400 dark:border-gray-700"
                                 :class="[
                                     { 'grid-cols-1 grid-rows-1': tweet.media.length == 1 },
                                     { 'grid-cols-2 grid-rows-1': tweet.media.length == 2 },
@@ -155,9 +155,8 @@
                                         v-if="media.type == 'image'"
                                         :src="media.url"
                                         :alt="tweet.content"
-                                        class="w-auto object-cover cursor-pointer"
+                                        class="object-cover cursor-pointer w-full h-full"
                                         :class="[
-                                            themeMode === true ? 'border border-gray-700' : 'border border-gray-400',
                                             { 'max-h-[810px]': props.parent },
                                             { 'max-h-[510px]': !props.parent },
                                             tweet.media.length > 2 && index == 1 ? 'h-full' : '',
@@ -215,11 +214,10 @@
 
                                             <div
                                                 class="mt-2"
-                                                :class="[props.parent ? '-ml-12' : '']"
                                                 v-if="props.tweet.retweet_of.media?.length > 0 && !props.carousel"
                                             >
                                                 <div
-                                                    class="grid gap-x-1 gap-y-1 rounded-2xl overflow-hidden"
+                                                    class="grid gap-x-[2px] gap-y-[2px] rounded-2xl overflow-hidden border border-gray-400 dark:border-gray-700"
                                                     :class="[
                                                         {
                                                             'grid-cols-1 grid-rows-1':
@@ -248,18 +246,14 @@
                                                             v-if="media.type == 'image'"
                                                             :src="media.url"
                                                             :alt="tweet.content"
-                                                            class="w-auto object-cover cursor-pointer"
+                                                            class="object-cover cursor-pointer w-full h-full"
                                                             :class="[
-                                                                themeMode === true
-                                                                    ? 'border border-gray-700'
-                                                                    : 'border border-gray-400',
                                                                 { 'max-h-[810px]': props.parent },
                                                                 { 'max-h-[510px]': !props.parent },
                                                                 props.tweet.retweet_of.media.length > 2 && index == 1
                                                                     ? 'h-full'
                                                                     : '',
                                                             ]"
-                                                            @click.stop.prevent="openMediaModal"
                                                         />
                                                         <video v-else width="340" height="240" controls>
                                                             <source
