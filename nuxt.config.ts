@@ -7,6 +7,8 @@ export default defineNuxtConfig({
         public: {
             backendUrl: "http://localhost:8000",
             frontendUrl: "http://localhost:3000",
+            pusherKey: process.env.NUXT_PUSHER_APP_KEY,
+            pusherCluster: process.env.NUXT_PUSHER_APP_CLUSTER,
         },
     },
     imports: {
