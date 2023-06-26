@@ -59,7 +59,7 @@ const props = defineProps({
         default: [],
     },
 });
-console.log(props.connections);
+
 const handleChatOpen = (recipient) => {
     emits("on-chat-open", recipient);
 };

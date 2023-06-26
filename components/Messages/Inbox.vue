@@ -159,11 +159,14 @@ const { user } = useAuth();
 const messageContainer = ref(null);
 const message = ref(null);
 
-onMounted(() => {
-    if (messageContainer.value) {
-        messageContainer.value.scrollTop = messageContainer.value.scrollHeight;
-    }
+onUpdated(() => {
+    scrollToBottom();
 });
+
+const scrollToBottom = () => {
+    if (!messageContainer.value) return;
+    messageContainer.value.scrollTop = messageContainer.value.scrollHeight;
+};
 
 const isMessageFromMe = (recipient_id) => {
     return user.value.id == recipient_id;

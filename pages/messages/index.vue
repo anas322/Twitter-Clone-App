@@ -12,6 +12,7 @@ useHead({
 });
 
 const { initEcho } = Echo();
+const { user } = useAuth();
 const { Connections, ChatMessageCollection, sendMessage } = useMessage();
 
 const connections = ref([]);
@@ -20,12 +21,26 @@ const chatRecipient = ref({});
 
 onMounted(() => {
     initEcho();
-    window.Echo.private("message.2.3").listen(".new.chat", (e) => {
-        alert(e.message);
-        console.log(e.message);
-    });
     getConnections();
 });
+
+const subscribeToChannel = (recipient_id) => {
+    const channel = sortBroadcastKeys(user.value.id, recipient_id);
+    console.log(channel);
+    window.Echo.private(`message.${channel}`).listen(".new.chat", (e) => {
+        chatMessages.value.push(e.message);
+    });
+};
+
+const leaveChannel = (recipient_id) => {
+    const channel = sortBroadcastKeys(user.value.id, recipient_id);
+    console.log(channel);
+    window.Echo.leave(`message.${channel}`);
+};
+
+const sortBroadcastKeys = (user_id, recipient_id) => {
+    return user_id < recipient_id ? user_id + "." + recipient_id : recipient_id + "." + user_id;
+};
 
 const getConnections = async () => {
     try {
@@ -38,9 +53,18 @@ const getConnections = async () => {
 
 const handleChatOpen = async (recipient) => {
     try {
+        if (chatRecipient.value && chatRecipient.value.id === recipient.id) return;
+
+        if (chatRecipient.value.id && chatRecipient.value.id != recipient.id) {
+            console.log("leaving channel");
+            leaveChannel(chatRecipient.value.id);
+        }
+
         const { messages } = await ChatMessageCollection(recipient.id);
         chatMessages.value = messages;
         chatRecipient.value = recipient;
+        subscribeToChannel(recipient.id);
+        console.log("join channel");
     } catch (error) {
         console.log(error);
     }
@@ -50,7 +74,7 @@ const handleSendMessage = async (messageText, recipient_id) => {
     try {
         const { message } = await sendMessage(messageText, recipient_id);
 
-        chatMessages.value.push(message);
+        // chatMessages.value.push(message);
     } catch (error) {
         console.log(error);
     }

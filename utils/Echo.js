@@ -28,9 +28,11 @@ export default () => {
                                 }
                             )
                             .then((response) => {
+                                console.log(response);
                                 callback(null, response.data);
                             })
                             .catch((error) => {
+                                console.log(error);
                                 callback(error);
                             });
                     },
