@@ -57,9 +57,9 @@
 
             <!-- send button -->
             <div class="sticky bottom-0 left-0 px-3 py-2">
-                <div class="flex items-center gap-x-2 = p-1 bg-gray-600 rounded-3xl">
+                <div class="flex items-center gap-x-2 = p-1 bg-slate-100 dark:bg-gray-600 rounded-3xl">
                     <textarea
-                        class="hide-scrollbar order-2 w-full rounded-full px-2 py-2 text-white focus:outline-none focus:ring-0 bg-inherit border-none resize-none"
+                        class="hide-scrollbar order-2 w-full rounded-full px-2 py-2 dark:text-white focus:outline-none focus:ring-0 bg-inherit border-none resize-none"
                         placeholder="Start a new message"
                         v-model.trim="message"
                         rows="1"

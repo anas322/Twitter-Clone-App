@@ -9,7 +9,7 @@
             <div>
                 <slot name="icon"></slot>
             </div>
-            <div class="hidden large:block ml-4 text-lg" :class="[textClasses]">
+            <div class="hidden large:block ml-4 text-lg">
                 <slot name="name"></slot>
             </div>
         </NuxtLink>
@@ -44,22 +44,15 @@ const emitter = useEmitter();
 const toggleMoreOption = ref(false);
 
 const props = defineProps({
-    active: {
-        type: Boolean,
-        default: false,
-    },
     to: {
         type: String,
-        default: "/",
+        required: false,
+        default: null,
     },
     moreIcon: {
         type: Boolean,
         default: false,
     },
-});
-
-const textClasses = computed(() => {
-    return props.active ? "font-semibold" : "font-normal";
 });
 
 const handleDisplay = () => {
@@ -73,3 +66,9 @@ const toggleMore = () => {
     }
 };
 </script>
+
+<style scoped>
+.router-link-active {
+    font-weight: bold;
+}
+</style>

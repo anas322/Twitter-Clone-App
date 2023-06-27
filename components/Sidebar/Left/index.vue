@@ -12,30 +12,34 @@
         </div>
 
         <div class="mt-2 space-y-3">
-            <SidebarLeftTab active>
+            <SidebarLeftTab to="/">
                 <template #icon>
-                    <HomeIcon class="w-7" />
+                    <HomeIconSolid v-if="activeRoute == 'home'" class="w-7" />
+                    <HomeIcon v-else class="w-7" />
                 </template>
                 <template #name> Home </template>
             </SidebarLeftTab>
 
             <SidebarLeftTab>
                 <template #icon>
-                    <MagnifyingGlassIcon class="w-7" />
+                    <MagnifyingGlassIcon v-if="activeRoute !== 'explore'" class="w-7" />
+                    <MagnifyingGlassIconSolid v-else class="w-7" />
                 </template>
                 <template #name> Explore </template>
             </SidebarLeftTab>
 
             <SidebarLeftTab to="/notifications">
                 <template #icon>
-                    <BellIcon class="w-7" />
+                    <BellIconSolid v-if="activeRoute == 'notifications'" class="w-7" />
+                    <BellIcon v-else class="w-7" />
                 </template>
                 <template #name> Notifications </template>
             </SidebarLeftTab>
 
             <SidebarLeftTab to="/messages">
                 <template #icon>
-                    <EnvelopeIcon class="w-7" />
+                    <EnvelopeIconSolid v-if="activeRoute == 'messages'" class="w-7" />
+                    <EnvelopeIcon v-else class="w-7" />
                 </template>
                 <template #name> Messages </template>
             </SidebarLeftTab>
@@ -63,12 +67,13 @@
 
             <SidebarLeftTab :to="`/profile/${user?.username}`">
                 <template #icon>
-                    <UserIcon class="w-7" />
+                    <UserIconSolid v-if="activeRoute == 'profile'" class="w-7" />
+                    <UserIcon v-else class="w-7" />
                 </template>
                 <template #name> Profile </template>
             </SidebarLeftTab>
 
-            <SidebarLeftTab moreIcon to="#">
+            <SidebarLeftTab moreIcon>
                 <template #icon>
                     <EllipsisHorizontalCircleIcon class="w-7" />
                 </template>
@@ -114,8 +119,10 @@
                     <UIDefaultAvatar v-else class="w-10 h-10 rounded-full overflow-hidden bg-gray-600" />
                 </div>
                 <div class="hidden large:flex flex-col pr-24">
-                    <h1 class="text-sm dark:text-white font-semibold hover:underline cursor-pointer">Anas</h1>
-                    <span class="text-sm text-gray-500">@username </span>
+                    <h1 class="text-sm dark:text-white font-semibold hover:underline cursor-pointer">
+                        {{ user.name }}
+                    </h1>
+                    <span class="text-sm text-gray-500">{{ user.usernameWithAt }} </span>
                 </div>
 
                 <span class="hidden large:block absolute right-3 top-1/2 -translate-y-1/2"
@@ -143,8 +150,20 @@
 </template>
 
 <script setup>
-import { HomeIcon } from "@heroicons/vue/24/solid";
 import {
+    HomeIcon as HomeIconSolid,
+    CheckBadgeIcon as CheckBadgeIconSolid,
+    MagnifyingGlassIcon as MagnifyingGlassIconSolid,
+    BellIcon as BellIconSolid,
+    BookmarkIcon as BookmarkIconSolid,
+    DocumentTextIcon as DocumentTextIconSolid,
+    UserIcon as UserIconSolid,
+    EllipsisHorizontalCircleIcon as EllipsisHorizontalCircleIconSolid,
+    EnvelopeIcon as EnvelopeIconSolid,
+    EllipsisHorizontalIcon as EllipsisHorizontalIconSolid,
+} from "@heroicons/vue/24/solid";
+import {
+    HomeIcon,
     CheckBadgeIcon,
     MagnifyingGlassIcon,
     BellIcon,
@@ -171,4 +190,15 @@ const handleLogout = () => {
     toggleLogout.value = false;
     logout();
 };
+const activeRoute = computed(() => {
+    const route = useRoute().path;
+    if (route === "/") return "home";
+    if (route === "/explore") return "explore";
+    if (route.indexOf("/notifications") >= 0) return "notifications";
+    if (route.indexOf("/messages") >= 0) return "messages";
+    if (route === "/bookmarks") return "bookmarks";
+    if (route === "/lists") return "lists";
+    if (route.indexOf("/profile") >= 0) return "profile";
+    return "";
+});
 </script>

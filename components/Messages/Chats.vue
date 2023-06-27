@@ -12,7 +12,7 @@
             <div v-else>
                 <article v-for="(conn, index) in props.connections" :key="`connection-${conn.id}`">
                     <div
-                        class="flex items-center p-3 gap-x-3 dark:hover:bg-white/10 transition cursor-pointer"
+                        class="flex items-center p-3 gap-x-3 hover:bg-gray-50 dark:hover:bg-white/10 transition cursor-pointer"
                         @click="handleChatOpen(conn.recipient)"
                     >
                         <!-- image  -->
