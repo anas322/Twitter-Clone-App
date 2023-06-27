@@ -216,8 +216,13 @@ const handleFormSubmit = async () => {
     const formData = new FormData();
 
     formData.append("name", data.profile.name);
-    formData.append("bio", data.profile.bio);
-    formData.append("location", data.profile.location);
+    if (data.profile.bio) {
+        formData.append("bio", data.profile.bio);
+    }
+
+    if (data.profile.location) {
+        formData.append("location", data.profile.location);
+    }
 
     if (selectedBanner.value) {
         formData.append("banner", selectedBanner.value);
