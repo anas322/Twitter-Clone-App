@@ -210,4 +210,10 @@ const SwitchToDarkMode = () => {
 const handleProfileModalClose = () => {
     closeEditProfileModal();
 };
+
+const { initEcho } = Echo();
+
+onBeforeMount(() => {
+    initEcho();
+});
 </script>

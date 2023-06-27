@@ -22,7 +22,13 @@
                         v-else
                         class="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-black bg-gray-600"
                     />
-                    <div class="self-center mt-12 mr-4">
+                    <div class="self-center mt-12 mr-4 flex gap-x-1">
+                        <div v-if="!profileData.ownsProfile" @click="handleOpenChat">
+                            <EnvelopeIcon
+                                class="h-8 w-8 p-1.5 hover:bg-white/10 dark:text-white border border-white rounded-full"
+                            />
+                        </div>
+
                         <button
                             v-if="profileData.ownsProfile"
                             class="border !border-gray-500 px-3 py-1 font-semibold text-sm rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-all dark:border-white dark:text-white"
@@ -106,8 +112,7 @@
 </template>
 
 <script setup>
-import { MapPinIcon } from "@heroicons/vue/24/outline";
-import { CalendarDaysIcon } from "@heroicons/vue/24/outline";
+import { EnvelopeIcon, MapPinIcon, CalendarDaysIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps({
     userNotFound: { Boolean, default: false },
@@ -173,5 +178,10 @@ const handleUnfollow = async () => {
     } finally {
         loading.value = false;
     }
+};
+const handleOpenChat = () => {
+    if (!profileData.value.user?.id) return;
+    navigateTo("/messages");
+    emitter.$emit("openChat", profileData.value.user);
 };
 </script>

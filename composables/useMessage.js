@@ -10,6 +10,17 @@ export default () => {
         });
     };
 
+    const getSession = async (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await useFetchApi(`/api/messages/${id}/session`);
+                resolve(response);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+
     const ChatMessageCollection = async (id) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -21,13 +32,14 @@ export default () => {
         });
     };
 
-    const sendMessage = async (message, recipient_id) => {
+    const sendMessage = async (message, recipient_id, session) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const response = await useFetchApi(`/api/messages/${recipient_id}`, {
                     method: "POST",
                     body: {
                         message,
+                        session,
                     },
                 });
                 resolve(response);
@@ -41,5 +53,6 @@ export default () => {
         Connections,
         ChatMessageCollection,
         sendMessage,
+        getSession,
     };
 };
