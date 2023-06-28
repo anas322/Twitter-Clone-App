@@ -391,9 +391,11 @@ const handleRetweetClick = async (isRetweetedByAuthUser) => {
         try {
             if (props.tweet.retweet_of != null) {
                 const data = await unretweetTweet(props.tweet.retweet_of.id);
+                props.tweet.retweet_of.isRetweetedByAuthUser = false;
                 console.log(data);
             } else {
                 const data = await unretweetTweet(props.tweet.id);
+                props.tweet.isRetweetedByAuthUser = false;
                 console.log(data);
             }
 
@@ -412,6 +414,7 @@ const handleRetweetClick = async (isRetweetedByAuthUser) => {
         try {
             const data = await createTweet(formData);
             emitter.$emit("newTweet", data.tweet);
+            props.tweet.retweet_of.isRetweetedByAuthUser = true;
             console.log(data);
         } catch (error) {
             console.log(error);
@@ -423,6 +426,7 @@ const handleRetweetClick = async (isRetweetedByAuthUser) => {
     try {
         const data = await createTweet(formData);
         emitter.$emit("newTweet", data.tweet);
+        props.tweet.isRetweetedByAuthUser = true;
         console.log(data);
     } catch (error) {
         console.log(error);

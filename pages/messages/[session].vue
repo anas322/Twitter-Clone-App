@@ -34,30 +34,32 @@
             <!-- messages -->
             <div ref="messageContainer" class="overflow-y-auto grow">
                 <div class="p-3 min-h-full flex flex-col justify-end gap-y-4">
-                    <template v-for="mssg in messages" :key="`message-${mssg.id}`">
-                        <div
-                            class="grid gap-y-1"
-                            :class="!isMessageFromMe(mssg.recipient.id) ? 'justify-end' : 'justify-start'"
-                        >
+                    <TransitionGroup name="list">
+                        <template v-for="mssg in messages" :key="`message-${mssg.id}`">
                             <div
-                                class="px-4 py-2 w-max rounded-full"
-                                :class="
-                                    !isMessageFromMe(mssg.recipient.id)
-                                        ? 'bg-dim-600 rounded-br-lg justify-self-end'
-                                        : 'bg-gray-600 rounded-bl-lg justify-self-start'
-                                "
+                                class="grid gap-y-1"
+                                :class="!isMessageFromMe(mssg.recipient.id) ? 'justify-end' : 'justify-start'"
                             >
-                                <span class="text-white">{{ mssg.message }}</span>
+                                <div
+                                    class="px-4 py-2 w-max rounded-full"
+                                    :class="
+                                        !isMessageFromMe(mssg.recipient.id)
+                                            ? 'bg-dim-600 rounded-br-lg justify-self-end'
+                                            : 'bg-gray-600 rounded-bl-lg justify-self-start'
+                                    "
+                                >
+                                    <span class="text-white">{{ mssg.message }}</span>
+                                </div>
+                                <span
+                                    class="text-xs text-gray-500"
+                                    :class="[
+                                        !isMessageFromMe(mssg.recipient.id) ? 'justify-self-end' : 'justify-self-start',
+                                    ]"
+                                    >{{ mssg.created_at }}</span
+                                >
                             </div>
-                            <span
-                                class="text-xs text-gray-500"
-                                :class="[
-                                    !isMessageFromMe(mssg.recipient.id) ? 'justify-self-end' : 'justify-self-start',
-                                ]"
-                                >{{ mssg.created_at }}</span
-                            >
-                        </div>
-                    </template>
+                        </template>
+                    </TransitionGroup>
                 </div>
             </div>
 
@@ -150,9 +152,15 @@ const message = ref(null);
 const recipientUser = ref({});
 const loading = ref(false);
 
-onUpdated(() => {
-    scrollToBottom();
-});
+watch(
+    messages,
+    () => {
+        setTimeout(() => {
+            scrollToBottom();
+        }, 500);
+    },
+    { deep: true }
+);
 
 const scrollToBottom = () => {
     if (!messageContainer.value) return;
@@ -237,5 +245,15 @@ const handleBack = () => {
 
 .hide-scrollbar::-webkit-scrollbar-thumb {
     background-color: transparent;
+}
+
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(-30px);
 }
 </style>
