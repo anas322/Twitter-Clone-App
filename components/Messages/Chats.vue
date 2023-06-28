@@ -1,6 +1,14 @@
 <template>
     <!-- start list of messages -->
-    <div class="border-x border-gray-200 col-span-12 small:col-span-10 meduim:col-span-4 dark:border-white/20">
+
+    <div
+        class="meduim:col-span-4 dark:border-white/20 border-x border-gray-200"
+        :class="[
+            $route.params?.session
+                ? 'hidden col-span-12 meduim:block medium:col-span-10'
+                : 'col-span-12 small:col-span-10',
+        ]"
+    >
         <!-- header -->
         <div class="min-h-screen">
             <div class="p-3">

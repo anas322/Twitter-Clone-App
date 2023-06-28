@@ -8,6 +8,12 @@
             <!-- header -->
             <div class="z-10 absolute left-0 right-0 top-0 backdrop-blur-md bg-[#ffffff78] dark:bg-[#ffffff05]">
                 <div class="p-2 flex items-center gap-x-6">
+                    <div>
+                        <ArrowSmallLeftIcon
+                            class="h-9 w-9 p-1.5 hover:bg-white/10 rounded-full transition dark:text-white"
+                            @click="handleBack"
+                        />
+                    </div>
                     <div class="flex items-center gap-x-2">
                         <div>
                             <NuxtLink :to="`/profile/${recipientUser.username}`">
@@ -129,7 +135,8 @@
 </template>
 
 <script setup>
-import { PaperAirplaneIcon } from "@heroicons/vue/24/outline";
+import { PaperAirplaneIcon, ArrowSmallLeftIcon } from "@heroicons/vue/24/outline";
+
 definePageMeta({ middleware: ["auth"], layout: false });
 
 const emits = defineEmits(["onSendMessage"]);
@@ -216,6 +223,10 @@ const sendMessageFun = async () => {
 const chatSession = computed(() => {
     return useRoute().params.session;
 });
+
+const handleBack = () => {
+    useRouter().go(-1);
+};
 </script>
 
 <style scoped>

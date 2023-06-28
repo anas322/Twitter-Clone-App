@@ -11,7 +11,14 @@
                 <!-- end left sidebar -->
 
                 <MessagesChats :connections="connections" @on-chat-open="handleChatOpen" />
-                <div class="hidden pt-2 meduim:block small:col-span-6 meduim:col-span-6">
+                <div
+                    class="meduim:col-span-6 pt-2"
+                    :class="[
+                        $route.params?.session
+                            ? 'col-span-12 small:col-span-10'
+                            : 'hidden meduim:block small:col-span-6',
+                    ]"
+                >
                     <div class="border-x border-gray-200 dark:border-white/20 relative h-screen">
                         <slot></slot>
                     </div>
