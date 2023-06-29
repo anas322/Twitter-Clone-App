@@ -220,6 +220,7 @@ onBeforeMount(() => {
         window.Echo.private("App.Models.User." + user.value.id).notification((notification) => {
             console.log(notification);
             emitter.$emit("newNotification", notification);
+            emitter.$emit("newNotificationUpdate");
         });
     }
 });

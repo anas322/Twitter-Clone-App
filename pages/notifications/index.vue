@@ -10,7 +10,10 @@
                         v-for="(notify, index) in notificationsArr"
                         :key="`notify-${index}`"
                         class="flex justifiy-start dark:hover:bg-white/5 cursor-pointer border-b border-dim-500 dark:border-gray-700 transition duration-300"
-                        :class="{ 'px-6 py-3 gap-x-3': notify?.typeOFtweet != 'tweet' }"
+                        :class="{
+                            'px-6 py-3 gap-x-3': notify?.typeOFtweet != 'tweet',
+                            'bg-white/5 hover:bg-white/10': !notify.read_at,
+                        }"
                         @click="handleNotificationClick(notify)"
                     >
                         <div>
@@ -93,10 +96,15 @@ useHead({
 });
 
 const emitter = useEmitter();
-const { Notifications } = useNotify();
+const { Notifications, readAllNotify, setNotificationsToNull } = useNotify();
 
 const loading = ref(true);
 const notificationsArr = ref([]);
+
+onBeforeUnmount(async () => {
+    await readAllNotify();
+    setNotificationsToNull();
+});
 
 onBeforeMount(() => {
     getNotifications();

@@ -14,8 +14,10 @@
         <div class="mt-2 space-y-3">
             <SidebarLeftTab to="/">
                 <template #icon>
-                    <HomeIconSolid v-if="activeRoute == 'home'" class="w-7" />
-                    <HomeIcon v-else class="w-7" />
+                    <div class="relative">
+                        <HomeIconSolid v-if="activeRoute == 'home'" class="w-7" />
+                        <HomeIcon v-else class="w-7" />
+                    </div>
                 </template>
                 <template #name> Home </template>
             </SidebarLeftTab>
@@ -30,16 +32,21 @@
 
             <SidebarLeftTab to="/notifications">
                 <template #icon>
-                    <BellIconSolid v-if="activeRoute == 'notifications'" class="w-7" />
-                    <BellIcon v-else class="w-7" />
+                    <div class="relative">
+                        <UIDot v-if="notificationCount">{{ notificationCount }}</UIDot>
+                        <BellIconSolid v-if="activeRoute == 'notifications'" class="w-7" />
+                        <BellIcon v-else class="w-7" />
+                    </div>
                 </template>
                 <template #name> Notifications </template>
             </SidebarLeftTab>
 
             <SidebarLeftTab to="/messages">
                 <template #icon>
-                    <EnvelopeIconSolid v-if="activeRoute == 'messages'" class="w-7" />
-                    <EnvelopeIcon v-else class="w-7" />
+                    <div class="relative">
+                        <EnvelopeIconSolid v-if="activeRoute == 'messages'" class="w-7" />
+                        <EnvelopeIcon v-else class="w-7" />
+                    </div>
                 </template>
                 <template #name> Messages </template>
             </SidebarLeftTab>
@@ -177,10 +184,17 @@ import {
 
 const emits = defineEmits(["onTweet"]);
 const { logout } = useAuth();
+const emitter = useEmitter();
 
 const { defaultTransition } = useTailWindConfig();
 const { user } = useAuth();
+const { useNotifyCount, NotificationIncrement } = useNotify();
 const toggleLogout = ref(false);
+const notificationCount = useNotifyCount();
+
+emitter.$on("newNotificationUpdate", () => {
+    NotificationIncrement();
+});
 
 const handleDisplay = () => {
     toggleLogout.value = !toggleLogout.value;
