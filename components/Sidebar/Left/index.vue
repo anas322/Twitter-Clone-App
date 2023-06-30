@@ -59,9 +59,12 @@
                 <template #name> Lists </template>
             </SidebarLeftTab>
 
-            <SidebarLeftTab>
+            <SidebarLeftTab to="/bookmarks">
                 <template #icon>
-                    <BookmarkIcon class="w-7" />
+                    <div class="relative">
+                        <BookmarkIconSolid v-if="activeRoute == 'bookmarks'" class="w-7" />
+                        <BookmarkIcon v-else class="w-7" />
+                    </div>
                 </template>
                 <template #name> Bookmarks </template>
             </SidebarLeftTab>

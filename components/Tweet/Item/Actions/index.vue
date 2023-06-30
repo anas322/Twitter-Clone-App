@@ -26,7 +26,9 @@
                     <span v-if="props.tweet.likes_count > 0"
                         ><span class="font-semibold dark:text-white">{{ likesCount }}</span> Likes
                     </span>
-                    <span><span class="font-semibold dark:text-white">59</span> Bookmarks </span>
+                    <span v-if="bookmarksCount > 0"
+                        ><span class="font-semibold dark:text-white">{{ bookmarksCount }}</span> Bookmarks
+                    </span>
                 </span>
             </div>
         </div>
@@ -110,12 +112,21 @@
                         </g>
                     </svg>
                 </template>
-                <template #default v-if="!props.parent"> {{ Math.floor(Math.random() * 1000 + 1) }} </template>
+                <ClientOnly>
+                    <template #default v-if="!props.parent"> {{ Math.floor(Math.random() * 1000 + 1) }} </template>
+                </ClientOnly>
             </TweetItemActionsIcon>
 
-            <TweetItemActionsIcon color="dim" :parent="props.parent" v-if="props.parent">
+            <TweetItemActionsIcon
+                color="dim"
+                :parent="props.parent"
+                v-if="props.parent"
+                :isBookmarkedByAuthUser="isBookmarked"
+                @click.stop.prevent="handleBookmark"
+            >
                 <template #icon="{ classes }">
-                    <BookmarkIcon :class="classes" />
+                    <BookmarkIconSolid v-if="isBookmarked" :class="classes" />
+                    <BookmarkIcon v-else :class="classes" />
                 </template>
 
                 <template #default v-if="!props.parent"> {{ Math.floor(Math.random() * 100 + 1) }} </template>
@@ -160,11 +171,15 @@
 
                                 <div
                                     class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/5 transition-all"
+                                    @click="handleBookmark"
                                 >
                                     <div>
-                                        <BookmarkIcon class="h-5 w-5 dark:text-white" />
+                                        <BookmarkIconSolid v-if="isBookmarked" class="h-5 w-5 text-yellow-500" />
+                                        <BookmarkIcon v-else class="h-5 w-5 dark:text-white" />
                                     </div>
-                                    <span class="dark:text-white text-sm font-semibold">Bookmark</span>
+                                    <span class="dark:text-white text-sm font-semibold"
+                                        >{{ isBookmarked ? "Remove Tweet from Bookmarks" : "Bookmark" }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -186,6 +201,8 @@ import {
     ArrowUpTrayIcon,
 } from "@heroicons/vue/24/outline";
 
+import { BookmarkIcon as BookmarkIconSolid } from "@heroicons/vue/24/solid";
+
 import { ArrowPathRoundedSquareIcon } from "@heroicons/vue/20/solid";
 
 const emits = defineEmits(["onCommitClick", "onRetweetClick", "onRetweetClickModal"]);
@@ -200,9 +217,12 @@ const props = defineProps({
     },
 });
 const { likeTweet, unlikeTweet } = useTweets();
+const { bookmarkTweet, unBookmarkTweet } = useBookmark();
 const showList = ref(false);
 const shareList = ref(false);
 const likesCount = ref(props.tweet.likes_count > 0 ? props.tweet.likes_count : "");
+const bookmarksCount = ref(props.tweet.bookmarks_count > 0 ? props.tweet.bookmarks_count : "");
+const isBookmarked = ref(props.tweet.isBookmarkedByAuthUser);
 const repliesCount = computed(() => {
     return props.tweet.replies_count > 0 ? props.tweet.replies_count : "";
 });
@@ -255,5 +275,22 @@ const handleRetweet = () => {
 const handleRetweetModal = () => {
     showList.value = false;
     emits("onRetweetClickModal");
+};
+
+const handleBookmark = async () => {
+    try {
+        if (isBookmarked.value) {
+            await unBookmarkTweet(props.tweet.id);
+            bookmarksCount--;
+        } else {
+            await bookmarkTweet(props.tweet.id);
+            bookmarksCount++;
+        }
+
+        isBookmarked.value = !isBookmarked.value;
+        shareList.value = false;
+    } catch (error) {
+        console.log(error);
+    }
 };
 </script>

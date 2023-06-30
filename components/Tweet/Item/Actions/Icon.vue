@@ -6,6 +6,7 @@
                 :classes="[
                     {
                         '!text-[#02bd7e]': props.isRetweetedByAuthUser && props.color === 'green',
+                        '!text-dim-500': props.isBookmarkedByAuthUser && props.color === 'dim',
                     },
                     props.parent ? `h-10 w-10` : `h-9 w-9`,
                     ` p-2 stroke-[2] text-gray-500 cursor-pointer rounded-full group-hover:text-${props.color}-500 group-hover:bg-${props.color}-500/20 transition duration-300`,
@@ -18,7 +19,7 @@
             :class="[
                 `group-hover:text-${props.color}-500`,
                 {
-                    '!text-[#02bd7e]': props.isRetweetedByAuthUser && props.color == 'green',
+                    '!text-dim-500': props.isBookmarkedByAuthUser && props.color === 'dim',
                 },
             ]"
         >
@@ -42,7 +43,9 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    isBookmarkedByAuthUser: {
+        type: Boolean,
+        default: false,
+    },
 });
-
-if (props.color == "green") console.log(props.isRetweetedByAuthUser);
 </script>
