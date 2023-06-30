@@ -14,7 +14,10 @@
                 v-model="search"
             />
         </div>
-        <div v-if="showList" class="shadow-effect absolute top-10 left-0 w-96 py-4 rounded-lg bg-white dark:bg-dim-900">
+        <div
+            v-if="showList"
+            class="dark:shadow-effect absolute top-10 left-0 w-96 py-4 rounded-lg bg-white dark:bg-dim-900"
+        >
             <template v-if="usersArr.length > 0">
                 <NuxtLink
                     :to="`/profile/${user.username}`"
@@ -22,7 +25,7 @@
                     :key="`search-user-${user.id}`"
                     @click="showList = false"
                 >
-                    <div class="py-2 px-3 cursor-pointer dark:hover:bg-white/10">
+                    <div class="py-2 px-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10">
                         <div class="flex gap-x-2 items-start">
                             <div>
                                 <img
@@ -37,7 +40,7 @@
                                 <span class="text-sm font-semibold dark:text-white">{{ user.name }}</span>
                                 <span class="text-sm text-gray-500">{{ user.usernameWithAt }}</span>
                                 <div
-                                    v-if="isAuthUserFollowThisProfile && isThisProfileFollowAuthUser"
+                                    v-if="user.isAuthUserFollowThisProfile && user.isThisProfileFollowAuthUser"
                                     class="flex gap-x-1 items-center mt-1 text-xs text-gray-500"
                                 >
                                     <UserIcon class="w-3" />
