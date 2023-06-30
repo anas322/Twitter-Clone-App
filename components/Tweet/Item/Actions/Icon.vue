@@ -5,7 +5,7 @@
                 name="icon"
                 :classes="[
                     {
-                        'text-[#02bd7e]': props.isRetweetedByAuthUser && props.color === 'green',
+                        '!text-[#02bd7e]': props.isRetweetedByAuthUser && props.color === 'green',
                     },
                     props.parent ? `h-10 w-10` : `h-9 w-9`,
                     ` p-2 stroke-[2] text-gray-500 cursor-pointer rounded-full group-hover:text-${props.color}-500 group-hover:bg-${props.color}-500/20 transition duration-300`,
@@ -18,7 +18,7 @@
             :class="[
                 `group-hover:text-${props.color}-500`,
                 {
-                    'text-[#02bd7e]': props.isRetweetedByAuthUser && props.color == 'green',
+                    '!text-[#02bd7e]': props.isRetweetedByAuthUser && props.color == 'green',
                 },
             ]"
         >
@@ -43,4 +43,6 @@ const props = defineProps({
         default: false,
     },
 });
+
+if (props.color == "green") console.log(props.isRetweetedByAuthUser);
 </script>
