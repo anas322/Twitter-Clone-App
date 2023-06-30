@@ -219,10 +219,13 @@ onBeforeMount(() => {
     if (user.value) {
         window.Echo.private("App.Models.User." + user.value.id).notification((notification) => {
             console.log(notification);
-            emitter.$emit("newNotification", notification);
-            emitter.$emit("newNotificationUpdate");
-            emitter.$emit("newMessageNotificationsUpdate");
-            emitter.$emit("newMessageNotifications", notification.chatSession);
+            if (notification.type === "App\\Notifications\\NotifyUser") {
+                emitter.$emit("newNotification", notification);
+                emitter.$emit("newNotificationUpdate");
+            } else if (notification.type === "App\\Notifications\\NewMessage") {
+                emitter.$emit("newMessageNotificationsUpdate");
+                emitter.$emit("newMessageNotifications", notification.chatSession);
+            }
         });
     }
 });

@@ -1,20 +1,7 @@
 <template>
     <div class="flex flex-col">
         <!-- serach bar -->
-        <div
-            class="flex flex-row gap-2 items-center border-none rounded-3xl overflow-hidden bg-dim-400 dark:bg-dim-700"
-            :class="{ 'outline-dim-500 outline-1 outline-double': outline }"
-        >
-            <div class="pl-4">
-                <MagnifyingGlassIcon class="w-6 h-6 p-[2px]" :class="outline ? 'text-dim-500' : 'text-gray-500'" />
-            </div>
-            <input
-                type="text"
-                class="w-full p-2 text-sm bg-inherit focus-within:outline-none border-0 focus:ring-0 focus:outline-none rounded-3xl dark:text-white"
-                placeholder="Search for Banana 🍌"
-                v-model="search"
-            />
-        </div>
+        <SidebarRightSearch />
         <!-- preview card -->
 
         <SidebarRightPreviewCard title="What’s happening">
@@ -62,7 +49,6 @@
 </template>
 
 <script setup>
-import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
 const whatHappeningItems = ref([
     {
         tag: "Trending in Canada",
@@ -94,15 +80,4 @@ const whoTsFollowItems = ref([
         avatar: "https://picsum.photos/200/200",
     },
 ]);
-
-const search = ref("");
-let outline = ref(false);
-
-watch(search, (value) => {
-    if (value.length > 0) {
-        outline.value = true;
-    } else {
-        outline.value = false;
-    }
-});
 </script>
