@@ -1,5 +1,5 @@
 <template>
-    <div class="relative">
+    <div>
         <NuxtLink
             :to="props.to"
             class="flex items-center p-3 large:pr-6 w-min mx-auto meduim:mx-0 hover:bg-gray-200 rounded-full dark:text-white dark:hover:bg-white/20"
@@ -13,23 +13,30 @@
                 <slot name="name"></slot>
             </div>
         </NuxtLink>
-        <div v-if="moreIcon && toggleMoreOption" class="absolute inset-0">
-            <div class="space-y-2 rounded-lg bg-white dark:bg-dim-900 shadow-lg shadow-gray-500 dark:shadow-white/20">
+        <div class="relative">
+            <div v-if="moreIcon && toggleMoreOption">
                 <div
-                    class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/10"
-                    @click="handleDisplay"
+                    class="z-20 absolute left-0 right-0 bottom-0 space-y-2 rounded-lg bg-white dark:bg-dim-900 shadow-lg shadow-gray-500 dark:shadow-white/20"
                 >
-                    <div>
-                        <PaintBrushIcon class="h-5 w-5 dark:text-white" />
+                    <div
+                        class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/10"
+                        @click="handleDisplay"
+                    >
+                        <div>
+                            <PaintBrushIcon class="h-5 w-5 dark:text-white" />
+                        </div>
+                        <span class="dark:text-white text-sm">Display</span>
                     </div>
-                    <span class="dark:text-white text-sm">Display</span>
-                </div>
 
-                <div class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/10">
-                    <div>
-                        <QuestionMarkCircleIcon class="h-5 w-5 dark:text-white" />
+                    <div
+                        class="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-white/10"
+                        @click="toggleMore"
+                    >
+                        <div>
+                            <QuestionMarkCircleIcon class="h-5 w-5 dark:text-white" />
+                        </div>
+                        <span class="dark:text-white text-sm">Help Center</span>
                     </div>
-                    <span class="dark:text-white text-sm">Help Center</span>
                 </div>
             </div>
         </div>
