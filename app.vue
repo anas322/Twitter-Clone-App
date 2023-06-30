@@ -221,6 +221,8 @@ onBeforeMount(() => {
             console.log(notification);
             emitter.$emit("newNotification", notification);
             emitter.$emit("newNotificationUpdate");
+            emitter.$emit("newMessageNotificationsUpdate");
+            emitter.$emit("newMessageNotifications", notification.chatSession);
         });
     }
 });

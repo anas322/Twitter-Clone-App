@@ -14,4 +14,9 @@ definePageMeta({ middleware: ["auth"], layout: false });
 useHead({
     title: "Messages / Twitter",
 });
+const { setNotifyMssgToFalse } = useMessage();
+
+onBeforeUnmount(() => {
+    setNotifyMssgToFalse();
+});
 </script>

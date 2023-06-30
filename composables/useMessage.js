@@ -1,4 +1,16 @@
 export default () => {
+    const useNotifyMssg = () => useState("message_notify", () => false);
+
+    const setNotifyMssgToTrue = () => {
+        const notify = useNotifyMssg();
+        notify.value = true;
+    };
+
+    const setNotifyMssgToFalse = () => {
+        const notify = useNotifyMssg();
+        notify.value = false;
+    };
+
     const Connections = async () => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -54,5 +66,8 @@ export default () => {
         ChatMessageCollection,
         sendMessage,
         getSession,
+        useNotifyMssg,
+        setNotifyMssgToTrue,
+        setNotifyMssgToFalse,
     };
 };

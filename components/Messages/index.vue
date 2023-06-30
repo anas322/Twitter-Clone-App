@@ -10,7 +10,24 @@
                 </div>
                 <!-- end left sidebar -->
 
-                <MessagesChats :connections="connections" @on-chat-open="handleChatOpen" />
+                <div
+                    class="meduim:col-span-4 dark:border-white/20 border-x border-gray-200"
+                    :class="[
+                        $route.params?.session
+                            ? 'hidden col-span-12 meduim:block medium:col-span-10'
+                            : 'col-span-12 small:col-span-10',
+                    ]"
+                >
+                    <div class="p-3">
+                        <span class="font-semibold dark:text-white text-xl">Messages</span>
+                    </div>
+
+                    <div v-if="loading" class="flex justify-center items-center h-screen">
+                        <UISpinner />
+                    </div>
+                    <MessagesChats v-else :connections="connections" @on-chat-open="handleChatOpen" />
+                </div>
+
                 <div
                     class="meduim:col-span-6 pt-2"
                     :class="[
@@ -44,6 +61,7 @@ const { Connections, getSession } = useMessage();
 
 const connections = ref([]);
 const sessionVal = ref("");
+const loading = ref(true);
 
 onBeforeMount(() => {
     getConnections();
@@ -55,17 +73,24 @@ const getConnections = async () => {
         connections.value = chats;
     } catch (error) {
         console.log(error);
+    } finally {
+        loading.value = false;
     }
 };
+
+emitter.$on("newMessageNotifications", (connection) => {
+    if (isRecipientExists(connection.recipient)) {
+        return;
+    }
+    connections.value.unshift(connection);
+});
 
 const handleChatOpen = async (recipient) => {
     try {
         if (sessionVal.value == useRoute().params?.session) return;
 
         const { session } = await getSession(recipient.id);
-
         sessionVal.value = session.uuid;
-
         navigateTo(`/messages/${session.uuid}?recipient=${recipient.id}`);
     } catch (error) {
         console.log(error);
@@ -82,6 +107,8 @@ emitter.$on("openChat", (recipient) => {
 });
 
 const isRecipientExists = (recipient) => {
+    if (connections.value.length === 0) return false;
+    console.log(connections.value);
     return connections.value.some((connection) => connection.recipient.id === recipient.id);
 };
 </script>

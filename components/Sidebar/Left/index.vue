@@ -44,6 +44,7 @@
             <SidebarLeftTab to="/messages">
                 <template #icon>
                     <div class="relative">
+                        <UIDot v-if="NotifyMssg" />
                         <EnvelopeIconSolid v-if="activeRoute == 'messages'" class="w-7" />
                         <EnvelopeIcon v-else class="w-7" />
                     </div>
@@ -189,11 +190,18 @@ const emitter = useEmitter();
 const { defaultTransition } = useTailWindConfig();
 const { user } = useAuth();
 const { useNotifyCount, NotificationIncrement } = useNotify();
+const { useNotifyMssg, setNotifyMssgToTrue } = useMessage();
+
 const toggleLogout = ref(false);
 const notificationCount = useNotifyCount();
+const NotifyMssg = useNotifyMssg();
 
 emitter.$on("newNotificationUpdate", () => {
     NotificationIncrement();
+});
+
+emitter.$on("newMessageNotificationsUpdate", () => {
+    setNotifyMssgToTrue();
 });
 
 const handleDisplay = () => {
