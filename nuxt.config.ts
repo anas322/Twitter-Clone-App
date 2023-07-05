@@ -14,4 +14,7 @@ export default defineNuxtConfig({
     imports: {
         dirs: ["./utils"],
     },
+    build: {
+        transpile: ["@headlessui/vue"],
+    },
 });
