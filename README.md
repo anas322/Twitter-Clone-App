@@ -1,173 +1,85 @@
-# Laravel Breeze - Nuxt3 Edition 🏝️
+## Project overview
 
-## Introduction
+Twitty is a twitter-clone application and this is the front-end side of the project, this project offers a seamless social media experience like you used to in twitter app.
 
-Based on the work made at [breeze-next](https://github.com/laravel/breeze-next)
+# Hi, I'm Anas! 👋
 
-This repository is an implementation of the [Laravel Breeze](https://laravel.com/docs/starter-kits) application / authentication starter kit frontend in [Nuxt3](https://v3.nuxtjs.org/). All of the authentication boilerplate is already written for you - powered by [Laravel Sanctum](https://laravel.com/docs/sanctum), allowing you to quickly begin pairing your beautiful Nuxt3 frontend with a powerful Laravel backend.
+I'm a full stack web developer passionate about
+creating interactive applications and experiences on
+the web.
 
-## Installation
+## Getting Started
 
-First, create a Nuxt3 compatible Laravel backend by installing Laravel Breeze into a [fresh Laravel application](https://laravel.com/docs/installation) and installing Breeze's API scaffolding:
+## To get started with Twitty, follow these steps:
 
-```bash
-# Create the Laravel application...
-laravel new nuxt-backend
-
-cd nuxt-backend
-
-# Install Breeze and dependencies...
-composer require laravel/breeze --dev
-
-php artisan breeze:install api
-
-# Run database migrations
-php artisan migrate
-```
-
-Next, ensure that your application's `APP_URL` and `FRONTEND_URL` environment variables are set to `http://localhost:8000` and `http://localhost:3000`, respectively.
-
-Also, when using email verification, you can change the page your users are redirected to by updating `HOME` constant in your `RouteServiceProvider.php` file:
-
-```php
-class RouteServiceProvider extends ServiceProvider
-{
-    // ...
-    public const HOME = '/dashboard';
-    // ...
-}
-```
-
-After defining the appropriate environment variables, you may serve the Laravel application using the `serve` Artisan command:
+Install NPM packages: While still in the terminal, run the following command to install the required NPM packages:
 
 ```bash
-# Serve the application...
-php artisan serve
+  npm install
 ```
 
-Next, clone this repository and install its dependencies with `yarn install` or `npm install`. Then, copy the `.env.example` file to `.env` and supply the URL of your backend and frontend:
-
-```
-NUXT_PUBLIC_BACKEND_URL=http://localhost:8000
-NUXT_PUBLIC_FRONTEND_URL=http://localhost:3000
+```bash
+  npm run dev
 ```
 
-Finally, run the application via `npm run dev`. The application will be available at `http://localhost:3000`:
+**_ YOU ARE READY TO GO _**
 
-```
-npm run dev
-```
+## Key Features
 
-> **Note**  
-> Currently, we recommend using `localhost` during local development of your backend and frontend to avoid CORS "Same-Origin" issues.
+-   Full authentication and authorization layer
+-   Restrict the data receieved by clients by laverages the API resources in Laravel
+-   Add tweets with optional photo(up to 4 photos) or on vedio
+-   Like, retweet, retweet with quote and commonet on your own tweets or others' tweets
+-   Every user have it's own profile where his own tweets and interactions place in
+-   Users also have the ability to add or delete their own profile picture, their cover, name, bio and location
+-   Users can follow each others
+-   Search for users with their name or username
+-   Users can communicate through chatting feature
+-   Users will notify when others like, retweet, follow, or comment on their tweets or if somebody send a message to him
+-   Real-time updates for notifications and new messages inbox through a webSocket connection using Pusher service
+-   Also users can bookmark their favourite tweets and they have access to it anytime
+-   And most importantly the app have a dark and light mode as I know the feelings of having only the light mode
+-   AND MORE
 
-## Composables
+## 🛠 Skills
 
-### useAuth
+-   HTML, CSS(tailwindcss), vue.js, nuxt.js 3
 
-This Nuxt3 application contains a custom `useAuth` composable, designed to abstract all authentication logic away from your pages. In addition, the composable can be used to access the currently authenticated user:
+## 🔗 Links
 
-```vue
-<script setup lang="ts">
-const { user, logout } = useAuth();
-</script>
+**_my linkedin profile_**
+[linkedin](https://www.linkedin.com/in/anas-elnahef-10074021b/)
 
-<template>
-  <div>
-    <p>{{ user.name }}</p>
+## Screenshots
 
-    <button @click="logout">Sign out</button>
-  </div>
-</template>
-```
+-   #### To view all individual screenshot open the 'screenshots' folder in the root folder
 
-### useSubmit
+#### Home page Dark and Light mode
 
-`useSubmit` is a useful composable to track validation errors and loading state when making `POST` or `PUT` requests:
+[🖼️ home.png](https://github.com/anas322/Streetwear-E-Commerce-Laravel/blob/main/screenshots/home.png) [🖼️ homeDark.png](https://github.com/anas322/Streetwear-E-Commerce-Laravel/blob/main/screenshots/homeDark.png)
 
-```vue
-<script setup lang="ts">
-const data = reactive({
-  title: "lorem ipsum",
-  body: "lorem ipsum",
-});
+#### Profile Preview
 
-const {
-  submit: createPost,
-  inProgress,
-  validationErrors,
-} = useSubmit(() => $larafetch("/api/posts", { method: "post", body: data }), {
-  onSuccess: (result) => console.log("Post created successfully", result),
-});
-</script>
+[🖼️Home.png](https://github.com/anas322/Streetwear-E-Commerce-Laravel/blob/main/screenshots/profile.png)
 
-<template>
-  <div>
-    <button @click="createPost" :disabled="inProgress">Create Post</button>
-    <pre>{{ validationErrors }}</pre>
-  </div>
-</template>
-```
+#### Single Tweet Preview
 
-## Utilities
+[🖼️ tweet.png](https://github.com/anas322/Streetwear-E-Commerce-Laravel/blob/main/screenshots/tweet_preview.png) [🖼️ single_tweet.png](https://github.com/anas322/Streetwear-E-Commerce-Laravel/blob/main/screenshots/single_tweet.png)
 
-You have the following auto imported utilities in the `utils` directory:
+#### Notifications
 
-### $larafetch
+[🖼️ notifications.png](https://github.com/anas322/Streetwear-E-Commerce-Laravel/blob/main/screenshots/notifications.png)
 
-`$larafetch` is a wrapper around Nuxt's `$fetch` that makes it a breeze to make requests to your Laravel app:
+#### Chat inbox
 
-- Base URL is already set to `NUXT_PUBLIC_BACKEND_URL` value specified in your `.env` file.
-- Auto CSRF management.
-- Forwards the appropriate headers/cookies when in SSR context.
-- Redirects to `/login` page when the response contains one of these status codes: `401, 419`
-- Redirects to the `/verify-email` page when the response contains status code: `409`
+[🖼️ chat.png](https://github.com/anas322/Streetwear-E-Commerce-Laravel/blob/main/screenshots/chat.png)
 
-> **Note**  
-> To take advantage of Nuxt3 SSR Hydration you should use this helper along with `useAsyncData` when making `GET` requests to fetch data, otherwise your app will make additional unnecessary requests once the page loads in your browser:
+#### Chat inbox
 
-```vue
-<script setup lang="ts">
-const { data: posts } = await useAsyncData("posts", () =>
-  $larafetch("/api/posts")
-);
-</script>
+[🖼️ bookmarks.png](https://github.com/anas322/Streetwear-E-Commerce-Laravel/blob/main/screenshots/bookmarks.png)
 
-<template>
-  <pre>{{ posts }}</pre>
-</template>
-```
-
-## Middleware
-
-You can use any of the provided middlewares in your pages:
-
-```vue
-<script setup lang="ts">
-definePageMeta({ middleware: ["auth"] });
-</script>
-
-<template>
-  <p>Only logged in users can access this page.</p>
-</template>
-```
-
-- `auth`
-
-  Only logged in users can access the page, otherwise redirect to `/login` page.
-
-- `guest`
-
-  Only non-logged in users can access the page, otherwise redirect to the `/dashboard` page.
-
-- `verified`
-
-  Only logged in users with verified emails can access the page, otherwise redirect to `/login` page (if not logged in) or `/verify-email` page (if logged in).
-
-- `unverified`
-
-  Only logged in users with unverified emails can access the page, otherwise redirect to `/login` page (if not logged in) or `/dashboard` page (if logged in). This is used only for the `/verify-email` page.
+##### Note: This is just a bunch of screenshot of the applications to highlight the top level overview of the applications and the applications itself has alot of other features
 
 ## License
 
-Laravel Breeze Nuxt3 is open-sourced software licensed under the [MIT license](LICENSE.md).
+[MIT](https://choosealicense.com/licenses/mit/)
