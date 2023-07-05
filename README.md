@@ -84,7 +84,7 @@ Install NPM packages: While still in the terminal, run the following command to 
 #### Chat inbox
 
 [🖼️ bookmarks.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/bookmarks.png)
-![twitter](screenshots/chat.png)
+![twitter](screenshots/bookmarks.png)
 
 ##### Note: This is just a bunch of screenshot of the applications to highlight the top level overview of the applications and the applications itself has alot of other features
 
