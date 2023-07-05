@@ -57,26 +57,34 @@ Install NPM packages: While still in the terminal, run the following command to 
 #### Home page Dark and Light mode
 
 [🖼️ home.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/home.png) [🖼️ homeDark.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/homeDark.png)
+![twitter](screenshots/home.png)
+![twitter](screenshots/homeDark.png)
 
 #### Profile Preview
 
 [🖼️Home.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/profile.png)
+![twitter](screenshots/profile.png)
 
 #### Single Tweet Preview
 
 [🖼️ tweet.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/tweet_preview.png) [🖼️ single_tweet.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/single_tweet.png)
+![twitter](screenshots/tweet_preview.png)
+![twitter](screenshots/single_tweet.png)
 
 #### Notifications
 
 [🖼️ notifications.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/notifications.png)
+![twitter](screenshots/notifications.png)
 
 #### Chat inbox
 
 [🖼️ chat.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/chat.png)
+![twitter](screenshots/chat.png)
 
 #### Chat inbox
 
 [🖼️ bookmarks.png](https://github.com/anas322/Twitter-Clone-App/blob/main/screenshots/bookmarks.png)
+![twitter](screenshots/chat.png)
 
 ##### Note: This is just a bunch of screenshot of the applications to highlight the top level overview of the applications and the applications itself has alot of other features
 
