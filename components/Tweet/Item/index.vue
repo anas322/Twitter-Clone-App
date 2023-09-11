@@ -163,10 +163,9 @@
                                         ]"
                                         @click.stop.prevent="openMediaModal()"
                                     />
-                                    <video v-else width="340" height="240" controls>
-                                        <source :src="tweet.media[0]?.url" type="video/mp4" />
-                                        Your browser does not support the video tag.
-                                    </video>
+                                    <div v-else @click="(e) => e.stopPropagation()">
+                                        <VideoPlayer :options="videoOptions" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +173,7 @@
 
                     <!-- retweeted tweet -->
                     <div v-if="props.tweet.retweet_of != null && props.tweet.content != null">
-                        <NuxtLink :to="`/status/${props.tweet.retweet_of.id}`">
+                        <div @click="navigateToRetweet">
                             <div
                                 class="relative flex flex-col items-start p-2 mt-2 rounded-lg border border-gray-200 dark:border-white/20"
                                 :class="[themeClass(), { 'bg-white dark:bg-dim-900 -ml-[50px]': props.parent }]"
@@ -255,13 +254,9 @@
                                                                     : '',
                                                             ]"
                                                         />
-                                                        <video v-else width="340" height="240" controls>
-                                                            <source
-                                                                :src="props.tweet.retweet_of.media[0]?.url"
-                                                                type="video/mp4"
-                                                            />
-                                                            Your browser does not support the video tag.
-                                                        </video>
+                                                        <div v-else @click="(e) => e.stopPropagation()">
+                                                            <VideoPlayer :options="videoOptionsRetweet" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,7 +277,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </NuxtLink>
+                        </div>
                     </div>
 
                     <div v-if="props.modal">
@@ -318,7 +313,7 @@ import {
     DocumentPlusIcon,
     FlagIcon,
 } from "@heroicons/vue/24/outline";
-
+import VideoPlayer from "~/components/UI/VideoPlayer.vue";
 import { ArrowPathRoundedSquareIcon } from "@heroicons/vue/20/solid";
 
 const { user } = useAuth();
@@ -359,6 +354,31 @@ const props = defineProps({
         default: false,
     },
 });
+
+const videoOptions = ref({
+    autoplay: true,
+    controls: true,
+    sources: [
+        {
+            src: props.tweet.media[0]?.url,
+            type: "video/mp4",
+        },
+    ],
+});
+
+const videoOptionsRetweet = props.tweet.retweet_of
+    ? ref({
+          autoplay: true,
+          controls: true,
+          sources: [
+              {
+                  src: props.tweet.retweet_of.media[0]?.url,
+                  type: "video/mp4",
+              },
+          ],
+      })
+    : null;
+
 onBeforeMount(() => {
     if (props.tweet.retweet_of != null && props.tweet.content == null) {
         tweet.value = props.tweet.retweet_of;
@@ -375,6 +395,14 @@ const navigateToTweet = () => {
 
     navigateTo({
         path: `/status/${tweet.value.id}`,
+    });
+};
+
+const navigateToRetweet = () => {
+    if (isSamePath() || props.modal) return;
+
+    navigateTo({
+        path: `/status/${tweet.value.retweet_of.id}`,
     });
 };
 
