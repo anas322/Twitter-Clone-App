@@ -2,7 +2,6 @@ import { $fetch, FetchOptions, FetchError } from "ofetch";
 
 const CSRF_COOKIE = "XSRF-TOKEN";
 const CSRF_HEADER = "X-XSRF-TOKEN";
-const AccessControlAllowCredentials = "Access-Control-Allow-Credentials";
 
 // could not import these types from ofetch, so copied them here
 interface ResponseMap {
@@ -37,7 +36,6 @@ export async function $larafetch<T, R extends ResponseType = "json">(
 
     let headers: any = {
         accept: "application/json",
-        AccessControlAllowCredentials,
         ...options?.headers,
         ...(token && { [CSRF_HEADER]: token }),
     };
