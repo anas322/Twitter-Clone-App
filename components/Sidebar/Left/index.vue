@@ -11,7 +11,7 @@
             </NuxtLink>
         </div>
 
-        <div class="mt-2 space-y-3">
+        <div class="meduim:mx-auto large:mx-0 large:mt-2 large:space-y-3">
             <SidebarLeftTab to="/">
                 <template #icon>
                     <div class="relative">
