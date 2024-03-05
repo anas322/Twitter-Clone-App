@@ -13,8 +13,8 @@ export default defineNuxtConfig({
     modules: ["@nuxtjs/tailwindcss", "nuxt-headlessui"],
     runtimeConfig: {
         public: {
-            backendUrl: "http://localhost:8000",
-            frontendUrl: "http://localhost:3000",
+            backendUrl: process.env.NUXT_BACKEND_URL,
+            frontendUrl: process.env.NUXT_FRONTEND_URL,
             pusherKey: process.env.NUXT_PUSHER_APP_KEY,
             pusherCluster: process.env.NUXT_PUSHER_APP_CLUSTER,
         },
