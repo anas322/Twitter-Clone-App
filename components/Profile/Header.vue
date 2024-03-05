@@ -139,7 +139,7 @@ const getUserProfileFun = async () => {
 
 const handleOpenEditProfileModal = () => {
     emitter.$emit("editProfile", {
-        avatar: profileData.value.avatar,
+        avatar: profileData.value?.avatar,
         banner: profileData.value.banner,
         bio: profileData.value.bio,
         location: profileData.value.location,

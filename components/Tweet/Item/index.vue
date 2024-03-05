@@ -24,10 +24,10 @@
                 class="absolute left-8 top-12 bottom-0 block mt-1 mx-auto w-[2px] bg-white/20"
             ></span>
             <div class="flex-shrink-0">
-                <NuxtLink :to="`/profile/${username}`" v-if="tweet.user.profile.?avatar">
+                <NuxtLink :to="`/profile/${username}`" v-if="tweet.user.profile?.avatar">
                     <img
                         class="w-10 h-10 rounded-full object-cover"
-                        :src="tweet.user.profile.?avatar"
+                        :src="tweet.user.profile?.avatar"
                         :alt="tweet.user.name"
                     />
                 </NuxtLink>
