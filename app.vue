@@ -90,6 +90,10 @@ useHead({
             name: "description",
             content: "Twitter is the best social media platform",
         },
+        {
+            httpEquiv: "Content-Security-Policy",
+            content: "upgrade-insecure-requests",
+        },
     ],
     link: [
         {
