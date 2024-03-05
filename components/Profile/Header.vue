@@ -13,8 +13,8 @@
                 </div>
                 <div class="flex justify-between -mt-16 pl-5">
                     <img
-                        v-if="profileData.avatar"
-                        :src="profileData.avatar"
+                        v-if="profileData?.avatar"
+                        :src="profileData?.avatar"
                         :alt="profileData.user?.name"
                         class="w-32 h-32 rounded-full border-4 border-white dark:border-black object-cover"
                     />

@@ -4,9 +4,9 @@
             <div class="flex-shrink-0">
                 <NuxtLink :to="`/profile/${user.username}`" class="cursor-pointer">
                     <img
-                        v-if="user.profile.avatar"
+                        v-if="user.profile?.avatar"
                         class="w-10 h-10 rounded-full object-cover"
-                        :src="user.profile.avatar"
+                        :src="user.profile?.avatar"
                         :alt="user.name"
                     />
                     <UIDefaultAvatar v-else class="w-10 h-10 rounded-full overflow-hidden bg-gray-600" />
@@ -72,9 +72,9 @@
                             <div class="flex-shrink-0">
                                 <div class="flex items-center gap-x-2">
                                     <img
-                                        v-if="props.tweet.user.profile.avatar"
+                                        v-if="props.tweet.user.profile?.avatar"
                                         class="w-4 h-4 rounded-full object-cover"
-                                        :src="props.tweet.user.profile.avatar"
+                                        :src="props.tweet.user.profile?.avatar"
                                         :alt="props.tweet.user.name"
                                     />
                                     <UIDefaultAvatar v-else class="w-4 h-4 rounded-full overflow-hidden bg-gray-600" />

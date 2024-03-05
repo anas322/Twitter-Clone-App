@@ -5,9 +5,9 @@
                 <div class="flex items-start">
                     <div class="flex-shrink-0 mt-2">
                         <img
-                            v-if="props.profile.user.avatar"
+                            v-if="props.profile.user?.avatar"
                             class="h-11 w-11 rounded-full"
-                            :src="props.profile.user.avatar"
+                            :src="props.profile.user?.avatar"
                             :alt="props.profile.user.name"
                         />
                         <UIDefaultAvatar v-else class="w-9 h-9 rounded-full overflow-hidden bg-gray-600" />

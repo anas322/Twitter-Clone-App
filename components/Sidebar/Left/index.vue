@@ -122,9 +122,9 @@
             >
                 <div class="w-10">
                     <img
-                        v-if="user.profile.avatar"
+                        v-if="user.profile?.avatar"
                         class="w-10 h-10 rounded-full object-cover"
-                        :src="user.profile.avatar"
+                        :src="user.profile?.avatar"
                         :alt="user.name"
                     />
                     <UIDefaultAvatar v-else class="w-10 h-10 rounded-full overflow-hidden bg-gray-600" />

@@ -48,7 +48,7 @@
                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                             <CameraIcon
                                 class="h-9 w-9 text-white p-2 bg-gray-800/50 rounded-full cursor-pointer hover:bg-gray-800/30 transition-all"
-                                @click="() => $refs.avatarImage.click()"
+                                @click="() => $refs?.avatarImage.click()"
                             />
                         </div>
                     </div>
@@ -153,7 +153,7 @@ const updateLoading = ref(false);
 const selectedBanner = ref(null);
 const bannerImagePreview = ref(props.profile.banner || null);
 const selectedAvatar = ref(null);
-const avatarImagePreview = ref(props.profile.avatar || null);
+const avatarImagePreview = ref(props.profile?.avatar || null);
 
 const dataLength = computed(() => {
     return {

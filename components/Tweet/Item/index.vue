@@ -24,10 +24,10 @@
                 class="absolute left-8 top-12 bottom-0 block mt-1 mx-auto w-[2px] bg-white/20"
             ></span>
             <div class="flex-shrink-0">
-                <NuxtLink :to="`/profile/${username}`" v-if="tweet.user.profile.avatar">
+                <NuxtLink :to="`/profile/${username}`" v-if="tweet.user.profile.?avatar">
                     <img
                         class="w-10 h-10 rounded-full object-cover"
-                        :src="tweet.user.profile.avatar"
+                        :src="tweet.user.profile.?avatar"
                         :alt="tweet.user.name"
                     />
                 </NuxtLink>
@@ -181,9 +181,9 @@
                                 <div class="flex-shrink-0">
                                     <div class="flex items-center gap-x-2">
                                         <img
-                                            v-if="props.tweet.retweet_of.user.profile.avatar"
+                                            v-if="props.tweet.retweet_of.user.profile?.avatar"
                                             class="w-4 h-4 rounded-full object-cover"
-                                            :src="props.tweet.retweet_of.user.profile.avatar"
+                                            :src="props.tweet.retweet_of.user.profile?.avatar"
                                             :alt="props.tweet.retweet_of.user.name"
                                         />
                                         <UIDefaultAvatar

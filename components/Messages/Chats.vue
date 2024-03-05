@@ -11,8 +11,8 @@
                     <!-- image  -->
                     <div class="min-w-max">
                         <img
-                            v-if="conn.recipient.profile.avatar"
-                            :src="conn.recipient.profile.avatar"
+                            v-if="conn.recipient.profile?.avatar"
+                            :src="conn.recipient.profile?.avatar"
                             :alt="conn.recipient.name"
                             class="w-12 h-12 rounded-full object-cover"
                         />

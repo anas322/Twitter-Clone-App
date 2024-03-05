@@ -29,8 +29,8 @@
                         <div class="flex gap-x-2 items-start">
                             <div>
                                 <img
-                                    v-if="user.profile.avatar"
-                                    :src="user.profile.avatar"
+                                    v-if="user.profile?.avatar"
+                                    :src="user.profile?.avatar"
                                     :alt="user.name"
                                     class="w-10 h-10 rounded-full object-cover"
                                 />
