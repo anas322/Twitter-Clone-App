@@ -6,7 +6,7 @@ export default defineNuxtConfig({
         head: {
             link: [
                 { rel: "stylesheet", href: "https://unpkg.com/video.js@7/dist/video-js.min.css" },
-                { rel: "stylesheet", href: "https://unpkg.com/@videojs/themes@1/dist/forest/index.css" },
+                { rel: "stylesheet", href: "https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" },
             ],
         },
     },

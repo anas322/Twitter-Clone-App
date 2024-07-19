@@ -1,5 +1,5 @@
 <template>
-    <video ref="videoPlayer" class="video-js vjs-theme-forest"></video>
+    <video v-intersect ref="videoPlayer" class="video-js vjs-theme-fantasy"></video>
 </template>
 
 <script>
