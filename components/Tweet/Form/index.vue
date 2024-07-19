@@ -106,21 +106,30 @@
                                         >
                                             <div v-if="props.tweet.media[0]?.type == 'image'">
                                                 <div
-                                                    v-for="(media, index) in props.tweet.media"
-                                                    :key="`media-key${index}`"
+                                                    class="grid gap-x-[2px] gap-y-[2px] rounded-2xl overflow-hidden border border-gray-400 dark:border-gray-700"
+                                                    :class="[
+                                                        { 'grid-cols-1 grid-rows-1': tweet.media.length == 1 },
+                                                        { 'grid-cols-2 grid-rows-1': tweet.media.length == 2 },
+                                                        { 'grid-cols-2 grid-rows-2': tweet.media.length > 2 },
+                                                    ]"
                                                 >
-                                                    <img
-                                                        :src="media.url"
-                                                        :alt="props.tweet.content"
-                                                        class="w-auto object-cover rounded-2xl"
-                                                        :class="[
-                                                            themeMode === true
-                                                                ? 'border border-gray-700'
-                                                                : 'border border-gray-400',
-                                                            { 'max-h-[810px]': props.parent },
-                                                            { 'max-h-[510px]': !props.parent },
-                                                        ]"
-                                                    />
+                                                    <div
+                                                        v-for="(media, index) in props.tweet.media"
+                                                        :key="`media-key${index}`"
+                                                    >
+                                                        <img
+                                                            :src="media.url"
+                                                            :alt="props.tweet.content"
+                                                            class="object-cover w-full h-full"
+                                                            :class="[
+                                                                themeMode === true
+                                                                    ? 'border border-gray-700'
+                                                                    : 'border border-gray-400',
+                                                                { 'max-h-[810px]': props.parent },
+                                                                { 'max-h-[280px]': !props.parent },
+                                                            ]"
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                             <video v-else width="340" height="240" controls>
