@@ -3,8 +3,8 @@
         <div class="relative w-full min-h-screen grid items-center">
             <carousel :items-to-show="1">
                 <slide v-for="(media, index) in props.mediaFiles" :key="`mediaSlider-${index}`">
-                    <div class="aspect-video">
-                        <img class="object-cover" :src="media.url" :alt="media.name" />
+                    <div class="w-auto h-[75vh]">
+                        <img class="object-cover w-full h-full" :src="media.url" :alt="media.name" />
                     </div>
                 </slide>
                 <template #addons>
@@ -30,7 +30,7 @@
 <script setup>
 // If you are using PurgeCSS, make sure to whitelist the carousel CSS classes
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { Carousel, Slide, Navigation } from "vue3-carousel";
 import { ChevronDoubleRightIcon } from "@heroicons/vue/24/outline";
 import { XMarkIcon } from "@heroicons/vue/20/solid";
 
@@ -47,6 +47,12 @@ const showTweetSection = ref(true);
 const toggleShow = () => {
     showTweetSection.value = !showTweetSection.value;
 };
+
+onMounted(() => {
+    if (window.innerWidth <= 512) {
+        showTweetSection.value = false;
+    }
+});
 </script>
 
 <style>
