@@ -146,11 +146,7 @@
                                     { 'grid-cols-2 grid-rows-2': tweet.media.length > 2 },
                                 ]"
                             >
-                                <div
-                                    v-for="(media, index) in tweet.media"
-                                    :key="`media-${index}`"
-                                    :class="[tweet.media.length > 2 && index == 1 ? 'row-span-2' : '']"
-                                >
+                                <div v-for="(media, index) in tweet.media" :key="`media-${index}`">
                                     <img
                                         v-if="media.type == 'image'"
                                         :src="media.url"
@@ -158,7 +154,7 @@
                                         class="object-cover cursor-pointer w-full h-full"
                                         :class="[
                                             { 'max-h-[810px]': props.parent },
-                                            { 'max-h-[510px]': !props.parent },
+                                            { 'max-h-[280px]': !props.parent },
                                             tweet.media.length > 2 && index == 1 ? 'h-full' : '',
                                         ]"
                                         @click.stop.prevent="openMediaModal()"
