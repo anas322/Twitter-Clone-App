@@ -231,11 +231,6 @@
                                                     <div
                                                         v-for="(media, index) in props.tweet.retweet_of.media"
                                                         :key="`media-${index}`"
-                                                        :class="[
-                                                            props.tweet.retweet_of.media.length > 2 && index == 1
-                                                                ? 'row-span-2'
-                                                                : '',
-                                                        ]"
                                                     >
                                                         <img
                                                             v-if="media.type == 'image'"
@@ -244,7 +239,7 @@
                                                             class="object-cover cursor-pointer w-full h-full"
                                                             :class="[
                                                                 { 'max-h-[810px]': props.parent },
-                                                                { 'max-h-[510px]': !props.parent },
+                                                                { 'max-h-[280px]': !props.parent },
                                                                 props.tweet.retweet_of.media.length > 2 && index == 1
                                                                     ? 'h-full'
                                                                     : '',
