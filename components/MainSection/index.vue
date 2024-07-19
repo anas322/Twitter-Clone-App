@@ -20,7 +20,7 @@
                 </div>
 
                 <div v-show="!withoutHeader" class="flex flex-row pt-5">
-                    <div class="w-1/2 py-3 px-28 hover:bg-gray-100 cursor-pointer dark:hover:bg-white/10">
+                    <div class="flex justify-center w-1/2 py-3 hover:bg-gray-100 cursor-pointer dark:hover:bg-white/10">
                         <span class="relative whitespace-nowrap" :class="[forYouClasses]"
                             >For you
                             <span
@@ -30,7 +30,7 @@
                         </span>
                     </div>
 
-                    <div class="w-1/2 py-3 px-28 hover:bg-gray-100 cursor-pointer dark:hover:bg-white/20">
+                    <div class="flex justify-center w-1/2 py-3 hover:bg-gray-100 cursor-pointer dark:hover:bg-white/20">
                         <span class="relative" :class="[followingClasses]"
                             >Following
                             <span
