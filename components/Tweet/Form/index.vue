@@ -51,7 +51,7 @@
                                     <img
                                         :src="media.url"
                                         v-if="media.type === 'image'"
-                                        class="object-cover col-span-1"
+                                        class="object-cover col-span-1 h-[240px] w-full"
                                     />
 
                                     <video width="340" height="240" v-else-if="media.type === 'video'" controls>

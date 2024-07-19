@@ -115,7 +115,7 @@
         </div>
 
         <!-- user avatar and name,username  -->
-        <div class="absolute bottom-4 left-1/2 -translate-x-1/2">
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-full">
             <div
                 class="relative flex flex-row gap-2 p-2 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full cursor-pointer"
                 @click="handleDisplay"
@@ -129,14 +129,14 @@
                     />
                     <UIDefaultAvatar v-else class="w-10 h-10 rounded-full overflow-hidden bg-gray-600" />
                 </div>
-                <div class="hidden large:flex flex-col pr-24">
+                <div class="hidden large:flex flex-col pr-6">
                     <h1 class="text-sm dark:text-white font-semibold hover:underline cursor-pointer">
                         {{ user.name }}
                     </h1>
                     <span class="text-sm text-gray-500">{{ user.usernameWithAt }} </span>
                 </div>
 
-                <span class="hidden large:block absolute right-3 top-1/2 -translate-y-1/2"
+                <span class="hidden large:block absolute right-1 top-1/2 -translate-y-1/2"
                     ><EllipsisHorizontalIcon
                         class="h-8 w-8 p-1 font-bold text-gray-500 dark:text-gray-200 rounded-full"
                 /></span>
