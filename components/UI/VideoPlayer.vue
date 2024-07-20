@@ -1,5 +1,5 @@
 <template>
-    <video v-intersect ref="videoPlayer" class="video-js vjs-theme-fantasy"></video>
+    <video v-intersect ref="videoPlayer" class="video-js vjs-theme-fantasy" controls></video>
 </template>
 
 <script>
@@ -21,7 +21,7 @@ export default {
         let player = null;
 
         onMounted(() => {
-            player = videojs(videoPlayer.value, { ...props.options, aspectRatio: "4:3" }, () => {
+            player = videojs(videoPlayer.value, { ...props.options, aspectRatio: "4:3", autoplay: false }, () => {
                 player.log("onPlayerReady", this);
             });
         });

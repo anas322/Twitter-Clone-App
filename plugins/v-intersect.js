@@ -1,6 +1,7 @@
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.directive("intersect", {
-        mounted(el, binding) {
+        mounted(el) {
+            el.pause();
             const options = {
                 root: null,
                 rootMargin: "0px",
@@ -9,9 +10,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
             const callback = (entries) => {
                 entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        //do nothing if the user re enters the element
-                    } else {
+                    if (!entry.isIntersecting && !el.paused) {
                         el.dataset.pausedByObserver = "true";
                         el.pause();
                     }
